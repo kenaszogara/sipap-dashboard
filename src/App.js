@@ -137,7 +137,7 @@ function App() {
   useEffect(() => {
     if (data == null) {
       setLoading(true);
-      const host = "Http://localhost:5000/";
+      const host = process.env.REACT_APP_API_URL || "http://localhost:5000/";
       axios
         .get(`${host}api/v1/auth/PP3_USR1`)
         .then((res) => {
@@ -262,7 +262,7 @@ function App() {
 
         {/* loading animation */}
         {loading && (
-          <Grid container xs={12} spacing={4}>
+          <Grid container spacing={4}>
             <Grid item className={classes.linearProgress} xs={12}>
               <LinearProgress />
             </Grid>
