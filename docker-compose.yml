@@ -1,0 +1,8 @@
+version: "3"
+services:
+  react-app:
+    build:
+      context: .
+      dockerfile: ./.docker/Dockerfile
+    ports:
+      - 13056:3000
