@@ -280,7 +280,12 @@ function App() {
                 >
                   <DirectionsBoatIcon />
                 </IconButton>
-                <Typography>Tanjung Emas</Typography>
+                <div>
+                  <span style={{ color: "#F2C76E", fontWeight: "500" }}>
+                    Pelabuhan
+                  </span>
+                  <Typography>Tanjung Emas</Typography>
+                </div>
               </Grid>
               <Grid container item alignItems="center" xs={6} md={3} lg={2}>
                 <IconButton
@@ -289,7 +294,14 @@ function App() {
                 >
                   <i className="fas fa-boxes"></i>
                 </IconButton>
-                <Typography>{headerData.totalData}</Typography>
+                <div>
+                  <span style={{ color: "#039be5", fontWeight: "500" }}>
+                    Total Transaksi
+                  </span>
+                  <Typography>
+                    {headerData.totalData.toLocaleString("id-ID")}
+                  </Typography>
+                </div>
               </Grid>
               <Grid container item alignItems="center" xs={6} md={3} lg={2}>
                 <IconButton
@@ -298,7 +310,14 @@ function App() {
                 >
                   <i className="fas fa-box-open"></i>
                 </IconButton>
-                <Typography>{headerData.totalBongkar.length}</Typography>
+                <div>
+                  <span style={{ color: "#009688", fontWeight: "500" }}>
+                    Jenis Bongkar
+                  </span>
+                  <Typography>
+                    {headerData.totalBongkar.length.toLocaleString("id-ID")}
+                  </Typography>
+                </div>
               </Grid>
               <Grid container item alignItems="center" xs={6} md={3} lg={2}>
                 <IconButton
@@ -307,7 +326,14 @@ function App() {
                 >
                   <i className="fas fa-box"></i>
                 </IconButton>
-                <Typography>{headerData.totalMuat.length}</Typography>
+                <div>
+                  <span style={{ color: "#e91e63", fontWeight: "500" }}>
+                    Jenis Muat
+                  </span>
+                  <Typography>
+                    {headerData.totalMuat.length.toLocaleString("id-ID")}
+                  </Typography>
+                </div>
               </Grid>
             </Grid>
 
