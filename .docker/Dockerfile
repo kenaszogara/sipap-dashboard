@@ -2,16 +2,16 @@ FROM node:12
 
 WORKDIR /app
 
-COPY ./ /app 
+COPY ./ /app  
 
-RUN npm install
+RUN yarn install
 
 RUN npm install -g serve
 
 EXPOSE 3000
 
 # build app
-CMD ["yarn", "build"]
+RUN yarn build
 
 # serve build folder
 CMD ["serve", "-s", "build", "--listen", "3000"]
