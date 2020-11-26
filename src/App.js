@@ -2,13 +2,17 @@ import React, { useRef, useEffect, useState } from "react";
 import "./App.css";
 // temporary local data
 // import { data } from "./data";
-import styled from "styled-components";
-import Chart from "chart.js";
+// import Chart from "chart.js";
+import MaterialTable from "material-table";
 import { DateTime } from "luxon";
 import axios from "axios";
 
 // material ui
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  makeStyles,
+  createMuiTheme,
+  ThemeProvider,
+} from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
@@ -18,6 +22,14 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 // material icons
 import DirectionsBoatIcon from "@material-ui/icons/DirectionsBoat";
 
+// graphs and charts
+import BarGraph from "./components/bargraph";
+import PieChart from "./components/piechart";
+
+// material ui theme
+const theme = createMuiTheme({});
+
+// material ui css
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -66,62 +78,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function BarGraph(props) {
-  const { labels, datasets, options, backgroundColor } = props;
-  const chartRef = useRef(null);
-  // const [chartInstance, setChartInstance] = useState(null);
-
-  useEffect(() => {
-    if (chartRef && chartRef.current) {
-      const newChartInstance = new Chart(chartRef.current.getContext("2d"), {
-        type: "bar",
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              backgroundColor: backgroundColor,
-              data: datasets,
-            },
-          ],
-        },
-        options: options,
-      });
-
-      // setChartInstance(newChartInstance);
-    }
-  }, [chartRef]);
-
-  return <canvas id="myBarChart" ref={chartRef} />;
-}
-
-function PieChart(props) {
-  const { labels, datasets, options, backgroundColor } = props;
-  const chartRef = useRef(null);
-  // const [chartInstance, setChartInstance] = useState(null);
-
-  useEffect(() => {
-    if (chartRef && chartRef.current) {
-      const newChartInstance = new Chart(chartRef.current.getContext("2d"), {
-        type: "pie",
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              backgroundColor: backgroundColor,
-              data: datasets,
-            },
-          ],
-        },
-        options: options,
-      });
-
-      // setChartInstance(newChartInstance);
-    }
-  }, [chartRef]);
-
-  return <canvas id="myPieChart" ref={chartRef} />;
-}
-
 function App() {
   const classes = useStyles();
 
@@ -130,6 +86,8 @@ function App() {
   const [barData, setBarData] = useState(null);
   const [pieData, setPieData] = useState(null);
   const [pieLabel, setPieLabel] = useState(null);
+  const [topBongkarVolumeData, setTopBongkarVolumeData] = useState(null);
+  const [topMuatVolumeData, setTopMuatVolumeData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
@@ -182,6 +140,9 @@ function App() {
       return item.JENIS === "MUAT";
     });
 
+    setTopBongkarVolumeData(parseVolumeData(totalBongkar));
+    setTopMuatVolumeData(parseVolumeData(totalMuat));
+
     setHeaderData({
       totalData,
       totalBongkar,
@@ -232,8 +193,53 @@ function App() {
       Object.entries(comodityData).sort(([, a], [, b]) => b - a)
     );
 
-    setPieLabel(Object.keys(sortedComodityData).slice(0, 4));
+    // setPieLabel(Object.keys(sortedComodityData).slice(0, 4));
+    setPieLabel(Object.keys(sortedComodityData));
     setPieData(Object.values(sortedComodityData));
+  };
+
+  // parse volume data
+  const parseVolumeData = (data) => {
+    const tempData = {};
+    let volume = 0;
+    data.forEach((item, index) => {
+      if (!tempData.hasOwnProperty(item.KOMODITAS)) {
+        item.SATUAN == "TON"
+          ? (volume += parseInt(item.VOLUME) * 1000)
+          : (volume += parseInt(item.VOLUME));
+
+        tempData[item.KOMODITAS] = volume;
+      } else {
+        item.SATUAN == "TON"
+          ? (volume += parseInt(item.VOLUME) * 1000)
+          : (volume += parseInt(item.VOLUME));
+
+        tempData[item.KOMODITAS] = volume;
+      }
+    });
+
+    // sort data by volume
+    const sortedTempData = Object.fromEntries(
+      Object.entries(tempData).sort(([, a], [, b]) => b - a)
+    );
+
+    // pick top 10,
+    /**
+     *  no:
+     *  name:
+     *  volume:
+     */
+    const top = 10;
+    const list = Object.entries(sortedTempData)
+      .slice(0, top)
+      .map(([key, value], index) => ({
+        no: index + 1,
+        name: key,
+        volume: value,
+      }));
+
+    // console.log(list);
+    return list;
   };
 
   const comodityDataColors = [
@@ -270,7 +276,7 @@ function App() {
         )}
 
         {!loading && !error && headerData && pieData && pieLabel && barData && (
-          <>
+          <Grid container spacing={4}>
             {/* Header Data */}
             <Grid container item direction="row" xs={12} spacing={4}>
               <Grid container item alignItems="center" xs={6} md={3} lg={2}>
@@ -337,7 +343,7 @@ function App() {
               </Grid>
             </Grid>
 
-            {/* Chart Data */}
+            {/* Body Data */}
             <Grid container item spacing={4}>
               <Grid item xs={12} md={7}>
                 <h2>Transaksi</h2>
@@ -368,22 +374,135 @@ function App() {
                 </Paper>
               </Grid>
               <Grid item xs={12} md={5}>
-                <h2>Komoditas</h2>
+                <h2>Transaksi per Komoditas</h2>
                 <Paper className={classes.paper}>
                   <PieChart
                     labels={pieLabel}
                     datasets={pieData}
                     backgroundColor={comodityDataColors}
                     options={{
-                      legend: {
-                        position: "bottom",
-                      },
+                      legend: false,
                     }}
                   />
                 </Paper>
               </Grid>
             </Grid>
-          </>
+
+            {/* Data Table */}
+            <Grid container item spacing={4}>
+              <Grid item xs={12} md={6} id="bongkar">
+                <MaterialTable
+                  columns={[
+                    {
+                      title: "No.",
+                      field: "no",
+                      cellStyle: {
+                        width: 1,
+                        maxWidth: 1,
+                      },
+                      headerStyle: {
+                        width: 1,
+                        maxWidth: 1,
+                      },
+                    },
+                    { title: "Jenis Komoditas", field: "name" },
+                    {
+                      title: "Jumlah (kg)",
+                      field: "volume",
+                      type: "numeric",
+                      render: (RowData) =>
+                        new Intl.NumberFormat("id-ID").format(
+                          parseInt(RowData.volume)
+                        ),
+                    },
+                  ]}
+                  data={topBongkarVolumeData}
+                  title="Bongkar"
+                  options={{
+                    search: false,
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={6} id="muat">
+                <MaterialTable
+                  columns={[
+                    {
+                      title: "No.",
+                      field: "no",
+                      cellStyle: {
+                        width: 1,
+                        maxWidth: 1,
+                      },
+                      headerStyle: {
+                        width: 1,
+                        maxWidth: 1,
+                      },
+                    },
+                    { title: "Jenis", field: "name" },
+                    {
+                      title: "Jumlah (kg)",
+                      field: "volume",
+                      type: "numeric",
+                      render: (RowData) =>
+                        new Intl.NumberFormat("id-ID").format(
+                          parseInt(RowData.volume)
+                        ),
+                    },
+                  ]}
+                  data={topMuatVolumeData}
+                  title="Muat"
+                  options={{
+                    search: false,
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={12} id="transaksi">
+                <MaterialTable
+                  columns={[
+                    {
+                      title: "Tgl. Transaksi",
+                      field: "TGL_TRANSAKSI",
+                      type: "date",
+                    },
+                    {
+                      title: "Jenis",
+                      field: "JENIS",
+                    },
+                    { title: "Komoditas", field: "KOMODITAS" },
+                    {
+                      title: "Volume",
+                      field: "VOLUME",
+                      type: "numeric",
+                      render: (RowData) =>
+                        new Intl.NumberFormat("id-ID").format(
+                          parseInt(RowData.VOLUME)
+                        ),
+                    },
+                    {
+                      title: "Satuan",
+                      field: "SATUAN",
+                    },
+                    {
+                      title: "Pelabuhan Muat",
+                      field: "PELB_MUAT",
+                    },
+                    {
+                      title: "Pelabuhan Bongkar",
+                      field: "PELB_BONGKAR",
+                    },
+                  ]}
+                  data={data}
+                  title="Data Pelindo III"
+                  options={{
+                    pageSize: 10,
+                    pageSizeOptions: [10, 20, 50, 100],
+                  }}
+                />
+              </Grid>
+            </Grid>
+          </Grid>
         )}
       </Grid>
     </div>
