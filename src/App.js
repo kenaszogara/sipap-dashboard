@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function App() {
+function App(props) {
   const classes = useStyles();
 
   const [data, setData] = useState(null);
@@ -297,6 +297,7 @@ function App() {
                 <IconButton
                   style={{ backgroundColor: "#039be5" }}
                   className={classes.iconButton}
+                  onClick={() => (window.location.href = "#transaksi")}
                 >
                   <i className="fas fa-boxes"></i>
                 </IconButton>
@@ -313,6 +314,7 @@ function App() {
                 <IconButton
                   style={{ backgroundColor: "#009688" }}
                   className={classes.iconButton}
+                  onClick={() => (window.location.href = "#bongkar")}
                 >
                   <i className="fas fa-box-open"></i>
                 </IconButton>
@@ -329,6 +331,7 @@ function App() {
                 <IconButton
                   style={{ backgroundColor: "#e91e63" }}
                   className={classes.iconButton}
+                  onClick={() => (window.location.href = "#muat")}
                 >
                   <i className="fas fa-box"></i>
                 </IconButton>
