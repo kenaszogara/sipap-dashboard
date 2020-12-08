@@ -3,8 +3,8 @@ import { DateTime } from "luxon";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import BarGraph from "./../components/bargraph";
-import PieChart from "./../components/piechart";
+import BarGraph from "./../bargraph";
+import PieChart from "./../piechart";
 
 const useStyles = makeStyles((theme) => ({
   paper: {

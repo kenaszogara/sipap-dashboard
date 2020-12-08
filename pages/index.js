@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import "./App.css";
 import axios from "axios";
+import getConfig from "next/config";
+import { useRouter } from "next/router";
 
 // material ui
 import {
@@ -11,9 +12,11 @@ import {
 import Grid from "@material-ui/core/Grid";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
-import Header from "./sections/header";
-import Chart from "./sections/chart";
-import Table from "./sections/table";
+import Header from "./../components/sections/header";
+import Chart from "./../components/sections/chart";
+import Table from "./../components/sections/table";
+
+const { publicRuntimeConfig } = getConfig();
 
 // material ui theme
 const theme = createMuiTheme({});
@@ -67,8 +70,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function App() {
+export default function Home() {
   const classes = useStyles();
+
+  const router = useRouter();
 
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -78,7 +83,7 @@ function App() {
   useEffect(() => {
     if (data == null) {
       setLoading(true);
-      const host = process.env.REACT_APP_API_URL || "http://localhost:5000/";
+      const host = publicRuntimeConfig.API_URL || "http://localhost:5000/";
       axios
         .get(`${host}api/v1/auth/PP3_USR1`)
         .then((res) => {
@@ -152,5 +157,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
