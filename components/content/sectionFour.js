@@ -6,15 +6,9 @@ import NeracaIcon from "@material-ui/icons/Eject";
 import Box from "@material-ui/core/Box";
 import { DateTime } from "luxon";
 import MaterialTable from "material-table";
-// material ui
-import {
-  makeStyles,
-  createMuiTheme,
-  ThemeProvider,
-} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
-export default function SectionTwo(props) {
+export default function SectionFour(props) {
   const { dataBapok } = props;
   const [bapok, setBapok] = useState(null);
   const grouped = groupBy(dataBapok, (komo) => komo.bulan);

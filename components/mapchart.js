@@ -1,62 +1,63 @@
 import React, { useEffect, useRef } from "react";
-import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
-import mapDataIndonesia from './mapIndonesia';
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+import mapDataIndonesia from "./mapIndonesia";
 import highchartsMap from "highcharts/modules/map";
 
-highchartsMap(Highcharts)
+if (typeof Highcharts === "object") {
+  highchartsMap(Highcharts);
+}
 
-export default function MapChart({ title, data }) {    
-
-  var data = [
-    ['id-jt', data]
-  ];
+export default function MapChart({ title, data }) {
+  var data = [["id-jt", data]];
 
   const mapOptions = {
     chart: {
-        map: mapDataIndonesia
+      map: mapDataIndonesia,
     },
     title: {
-      text: 'Perdagangan '+title,
+      text: "Perdagangan " + title,
     },
     subtitle: {
-      text: '(Sumber: PELINDO III)'
+      text: "(Sumber: PELINDO III)",
     },
     mapNavigation: {
-        enabled: true,
-        buttonOptions: {
-            verticalAlign: 'bottom'
-        }
+      enabled: true,
+      buttonOptions: {
+        verticalAlign: "bottom",
+      },
     },
     colorAxis: {
-      min: 0    
+      min: 0,
     },
     legend: {
-        layout: 'vertical',
-        align: 'left',
-        verticalAlign: 'bottom'
+      layout: "vertical",
+      align: "left",
+      verticalAlign: "bottom",
     },
-    series: [{
-      mapData: mapDataIndonesia,
-      name: 'Indoensia',
-      data: data,
-      states: {
+    series: [
+      {
+        mapData: mapDataIndonesia,
+        name: "Indoensia",
+        data: data,
+        states: {
           hover: {
-              color: '#BADA55'
-          }
+            color: "#BADA55",
+          },
+        },
+        dataLabels: {
+          enabled: true,
+          format: "{point.name}",
+        },
       },
-      dataLabels: {
-        enabled: true,
-        format: '{point.name}'
-      }      
-    }]
+    ],
   };
 
   return (
-      <HighchartsReact
-        options={mapOptions}
-        constructorType={'mapChart'}
-        highcharts={Highcharts}
-      />
-    );
+    <HighchartsReact
+      options={mapOptions}
+      constructorType={"mapChart"}
+      highcharts={Highcharts}
+    />
+  );
 }
