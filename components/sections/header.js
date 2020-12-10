@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
+import Button from '@material-ui/core/Button';
 
 import DirectionsBoatIcon from "@material-ui/icons/DirectionsBoat";
 
@@ -55,6 +56,7 @@ export default function Header({ data }) {
           <Typography>Tanjung Emas</Typography>
         </div>
       </Grid>
+
       <Grid container item alignItems="center" xs={6} md={3} lg={2}>
         <IconButton
           style={{ backgroundColor: "#039be5" }}
@@ -72,6 +74,7 @@ export default function Header({ data }) {
           </Typography>
         </div>
       </Grid>
+
       <Grid container item alignItems="center" xs={6} md={3} lg={2}>
         <IconButton
           style={{ backgroundColor: "#009688" }}
@@ -90,6 +93,7 @@ export default function Header({ data }) {
           </Typography>
         </div>
       </Grid>
+
       <Grid container item alignItems="center" xs={6} md={3} lg={2}>
         <IconButton
           style={{ backgroundColor: "#e91e63" }}
@@ -107,6 +111,14 @@ export default function Header({ data }) {
           </Typography>
         </div>
       </Grid>
+      <Grid container item alignItems="center" xs={6} md={3} lg={2}>      
+      </Grid>
+      <Grid container item alignItems="center" xs={6} md={3} lg={2}>
+        <Button variant="contained" color="primary" href="/manage">
+          Manage
+        </Button>
+      </Grid>
+
     </Grid>
   );
 }
