@@ -32,8 +32,7 @@ export default function LineGraph(props) {
           title: {
             display: true,
             text: ''
-          },
-          lineTension: '0',          
+          },                
           tooltips: {
             mode: 'index',
             intersect: false,
@@ -58,7 +57,8 @@ export default function LineGraph(props) {
               }
             }]
           }
-        }
+        },
+        lineTension: 0,
       });
     }
   });

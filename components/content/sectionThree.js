@@ -3,7 +3,6 @@ import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import LineGraph from '../linegraph';
 import NeracaIcon from '@material-ui/icons/Eject';
-import Box from '@material-ui/core/Box';
 import { DateTime } from "luxon";
 import MaterialTable from "material-table";
 // material ui
@@ -48,21 +47,24 @@ export default function SectionThree({ data }) {
 
   return (
     <Grid container item direction="row" xs={12} spacing={4}>
+      <Grid item lg={12}>
+        <Typography variant="h6" align="center" color="primary">
+            Perdagangan Masuk / Keluar
+        </Typography>
+      </Grid>
+
       <Grid item xs={12} md={6} lg={6}>  
         <Typography variant="h6" align="center" color="primary">
             Masuk
         </Typography>
-        <Box borderRadius={16} boxShadow={3}>        
-          <MapChart title={"Masuk"} data={bongkar}/>
-        </Box>                                          
+        <MapChart title={"Masuk"} data={bongkar}/>                                   
       </Grid> 
+
       <Grid item xs={12} md={6} lg={6}>  
         <Typography variant="h6" align="center" color="primary">
             Keluar
-        </Typography>
-        <Box borderRadius={16} boxShadow={3}>        
-          <MapChart title={"Masuk"} data={muat}/>
-        </Box>                                          
+        </Typography>        
+        <MapChart title={"Keluar"} data={muat}/>                                   
       </Grid>              
     </Grid>      
   );

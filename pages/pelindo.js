@@ -145,7 +145,7 @@ export default function Pelindo() {
 
   return (
     <div>      
-      <AppBar position="static" className={classes.appbar}>
+      <AppBar position="static" style={{ padding: ".7em", paddingLeft: "3em" }}>
         <Toolbar>          
           <Typography variant="h5" className={classes.title}>
             SIPAP Dashboard
