@@ -19,6 +19,7 @@ import SectionThree from "../components/content/sectionThree";
 import SectionFour from "../components/content/sectionFour";
 
 import dataKomoditas from "../json/data";
+import Button from "@material-ui/core/Button";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -99,6 +100,16 @@ export default function Home() {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h5">SIPAP Dashboard</Typography>
+          <Button
+            variant="contained"
+            color="secondary"
+            style={{ marginLeft: "auto" }}
+            onClick={() =>
+              (window.location.href = "http://159.65.2.14/sipap/login")
+            }
+          >
+            Manage
+          </Button>
         </Toolbar>
       </AppBar>
 
@@ -106,7 +117,7 @@ export default function Home() {
       {loading && (
         <Grid container>
           <Grid item className={classes.linearProgress} xs={12}>
-            <LinearProgress />
+            <LinearProgress color="secondary" />
           </Grid>
         </Grid>
       )}
@@ -115,7 +126,7 @@ export default function Home() {
         <div
           style={{ marginLeft: "4em", marginRight: "4em", marginTop: "1.3em" }}
         >
-          <Grid container spacing={2}>
+          <Grid container spacing={4}>
             <SectionOne chart={data} surplus={neracaSurplus} />
 
             <SectionTwo dataBapok={dataKomoditas} />
