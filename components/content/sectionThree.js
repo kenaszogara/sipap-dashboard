@@ -14,7 +14,7 @@ import {
 import Grid from "@material-ui/core/Grid";
 
 import MapChart from "../mapchart";
-  
+
 export default function SectionThree({ data }) {  
   const [bongkar, setBongkar] = useState(null);
   const [muat, setMuat] = useState(null);

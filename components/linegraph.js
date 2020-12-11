@@ -32,7 +32,7 @@ export default function LineGraph(props) {
           title: {
             display: true,
             text: ''
-          },                
+          },        
           tooltips: {
             mode: 'index',
             intersect: false,
@@ -62,7 +62,7 @@ export default function LineGraph(props) {
                 tension: 0 // disables bezier curves
             }
           },
-        },        
+        },
       });
     }
   });

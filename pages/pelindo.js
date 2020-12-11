@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import getConfig from "next/config";
 import { useRouter } from "next/router";
-
 // material ui
 import {
   makeStyles,

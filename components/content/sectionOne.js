@@ -39,11 +39,11 @@ export default function SectionOne({chart, surplus}) {
             item.SATUAN === "TON" ? (total += parseInt(item.VOLUME) * 1000) : (total += parseInt(item.VOLUME));
         } else {
           bongkar.push(total);
-          month++;        
+          month++;
           total = 0;
         }
         if (data.length === index + 1) {
-          bongkar.push(total);          
+          bongkar.push(total);
         }
       }
     });
@@ -63,7 +63,7 @@ export default function SectionOne({chart, surplus}) {
         } else {
           muat.push(total);
           month++;    
-          total = 0;    
+          total = 0;
         }
         if (data.length === index + 1) {
           muat.push(total);
@@ -75,7 +75,7 @@ export default function SectionOne({chart, surplus}) {
   };
 
   return (
-    <Grid container item direction="row" xs={12} spacing={4}>              
+    <Grid container item direction="row" xs={12} spacing={4}>
       <Grid item xs={12} md={8} lg={8}>  
         <h2 align="center" style={{ color: "primary" }}>
             Transaksi Keluar dan Masuk <br/> Per Bulanan
@@ -89,7 +89,7 @@ export default function SectionOne({chart, surplus}) {
           Neraca Surplus Pedagangan     
           <br/>
           Bulan Ini              
-        </h2>                
+        </h2>
         <Box width={1} boxShadow={3} style={{ padding: "20px" }}>
             <h2 align="center">
                 { 

@@ -85,7 +85,7 @@ export default function SectionTwo(props) {
 
   return (
     <Grid container item direction="row" xs={12} spacing={4}>
-      <Grid item xs={12} md={12} lg={12}>  
+      <Grid item xs={12} md={12} lg={12}>
         <h2 align="center" color="primary">
             Neraca BAPOK
         </h2>
@@ -120,7 +120,7 @@ export default function SectionTwo(props) {
               {
                 title: "Surplus/Minus",
                 field: "surplus",
-                type: "numeric",                
+                type: "numeric",
                 render: (rowData) => 
                   rowData.surplus < 0 ? 
                     <p style={{ color: "#f44336", textAlign: "right" }}>{ new Intl.NumberFormat("id-ID").format(parseInt(rowData.surplus)) }</p> 
