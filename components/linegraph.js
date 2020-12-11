@@ -49,7 +49,6 @@ export default function LineGraph(props) {
             display: true,
             text: "",
           },
-
           tooltips: {
             mode: "index",
             intersect: false,
@@ -71,12 +70,14 @@ export default function LineGraph(props) {
             yAxes: [
               {
                 display: true,
-                scaleLabel: {
-                  display: true,
-                  labelString: "TON",
-                },
-              },
-            ],
+                labelString: 'TON'
+              }
+            }]
+          },
+          elements: {
+            line: {
+                tension: 0 // disables bezier curves
+            }
           },
         },
       });

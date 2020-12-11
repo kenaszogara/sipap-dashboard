@@ -14,8 +14,8 @@ import {
 } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
-export default function SectionTwo(props) {
-  const { dataBapok } = props;
+export default function SectionTwo(props) {  
+  const {dataBapok} = props;  
   const [bapok, setBapok] = useState(null);
   const grouped = groupBy(dataBapok, (komo) => komo.bulan);
 

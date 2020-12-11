@@ -1,60 +1,70 @@
-import React, { useEffect, useRef } from "react";
-import Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
-import mapDataIndonesia from "./mapIndonesia";
-import highchartsMap from "highcharts/modules/map";
+import React, { useEffect } from "react";
+import Highcharts from "highcharts/highmaps";
+import mapDataIndonesia from "./mapindonesia";
+import Box from '@material-ui/core/Box';
+// import HighchartsExporting from 'highcharts/modules/exporting'
 
-if (typeof Highcharts === "object") {
-  highchartsMap(Highcharts);
-}
+// if (typeof Highcharts === "object") { HighchartsExporting(Highcharts) ; }
 
 export default function MapChart({ title, data }) {
-  var data = [["id-jt", data]];
+  let dataMap = [
+    ['id-jt', data]
+  ];
 
-  const mapOptions = {
-    title: {
-      text: "Perdagangan " + title,
-    },
-    subtitle: {
-      text: "(Sumber: PELINDO III)",
-    },
-    mapNavigation: {
-      enabled: true,
-      buttonOptions: {
-        verticalAlign: "bottom",
+  useEffect(() => {
+    Highcharts.mapChart(title, {        
+      title: {
+        text: 'Perdagangan '+title,
       },
-    },
-    colorAxis: {
-      min: 0,
-    },
-    legend: {
-      layout: "vertical",
-      align: "left",
-      verticalAlign: "bottom",
-    },
-    series: [
-      {
+      subtitle: {
+        text: '(Sumber: PELINDO III)'
+      },
+      mapNavigation: {
+        enabled: true,
+        buttonOptions: {
+            verticalAlign: 'bottom'
+        }
+      },
+      colorAxis: {
+        min: 0    
+      },
+      legend: {
+          layout: 'vertical',
+          align: 'left',
+          verticalAlign: 'bottom',
+          title: {
+          text: "VOLUME PER TON",
+          style: {
+            color:  "black"
+            }
+          }
+      },
+      mapNavigation: {
+        enabled: true,
+        buttonOptions: {
+          verticalAlign: "bottom"
+        }
+      },
+      series: [{
+        data: dataMap,
         mapData: mapDataIndonesia,
-        name: "Indoensia",
-        data: data,
+        name: "Data Perdagangan",
         states: {
           hover: {
-            color: "#BADA55",
-          },
+              color: '#BADA55'
+          }
         },
         dataLabels: {
-          enabled: true,
-          format: "{point.name}",
-        },
-      },
-    ],
-  };
+        enabled: true,
+        format: '{point.name}'
+        }
+      }]
+    })
+  });
 
   return (
-    <HighchartsReact
-      options={mapOptions}
-      constructorType={"mapChart"}
-      highcharts={Highcharts}
-    />
+    <Box borderRadius={16} boxShadow={3}>
+      <div className="map_bg" id={title} />
+    </Box>
   );
 }

@@ -67,19 +67,19 @@ export default function SectionOne({ chart, surplus }) {
 
   return (
     <Grid container item direction="row" xs={12} spacing={4}>
-      <Grid item xs={12} md={9} lg={9}>
+      <Grid item xs={12} md={8} lg={9}>
         <h2>Transaksi Keluar dan Masuk Per Bulanan</h2>
-        <Box borderRadius={5} boxShadow={3}>
+        <Box borderRadius={4} boxShadow={3}>
           <LineGraph
             dataBongkar={topBongkarVolumeData}
             dataMuat={topMuatVolumeData}
           />
         </Box>
       </Grid>
-      <Grid item xs={12} md={3} lg={3}>
+      <Grid item xs={12} md={4} lg={3}>
         <h2>Neraca Surplus Pedagangan Bulan Ini</h2>
         <Box
-          borderRadius={5}
+          borderRadius={4}
           width={1}
           boxShadow={3}
           style={{ padding: "20px" }}
