@@ -1,16 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Typography from '@material-ui/core/Typography';
-import Card from '@material-ui/core/Card';
-import LineGraph from '../linegraph';
-import NeracaIcon from '@material-ui/icons/Eject';
-import { DateTime } from "luxon";
-import MaterialTable from "material-table";
-// material ui
-import {
-  makeStyles,
-  createMuiTheme,
-  ThemeProvider,
-} from "@material-ui/core/styles";
+import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 
 import MapChart from "../mapchart";

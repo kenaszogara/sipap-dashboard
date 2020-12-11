@@ -70,14 +70,14 @@ export default function LineGraph(props) {
             yAxes: [
               {
                 display: true,
-                labelString: 'TON'
-              }
-            }]
+                labelString: "TON",
+              },
+            ],
           },
           elements: {
             line: {
-                tension: 0 // disables bezier curves
-            }
+              tension: 0, // disables bezier curves
+            },
           },
         },
       });
