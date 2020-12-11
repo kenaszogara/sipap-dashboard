@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Home from '../../components/manage/index'
-import Dashboard from '../../components/manage/dashboard/dashboard'
+import Home from './../../components/manage/index'
+import Dashboard from './../../components/manage/dashboard/Dashboard'
 
 // import axios from "axios";
 // import { makeStyles, useTheme } from '@material-ui/core/styles';

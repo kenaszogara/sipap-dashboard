@@ -14,4 +14,4 @@ EXPOSE 3000
 RUN yarn build
 
 # serve build folder
-CMD ["serve", "-s", "build", "--listen", "3000"]
+CMD yarn run start
