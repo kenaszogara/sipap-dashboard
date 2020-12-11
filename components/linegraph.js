@@ -10,48 +10,65 @@ export default function LineGraph(props) {
       new Chart(chartRef.current.getContext("2d"), {
         type: "line",
         data: {
-          labels: [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
+          labels: [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+          ],
           datasets: [
             {
-              label: 'keluar',
-              backgroundColor: '#fe7979',
-              borderColor: '#fe7979',
+              label: "keluar",
+              backgroundColor: "#fe7979",
+              borderColor: "#fe7979",
               data: dataMuat,
               fill: false,
-            },{
-              label: 'Masuk',
+              lineTension: "0",
+            },
+            {
+              label: "Masuk",
               fill: false,
-              backgroundColor: '#6a7df3',
-              borderColor: '#6a7df3',
+              backgroundColor: "#6a7df3",
+              borderColor: "#6a7df3",
               data: dataBongkar,
-            }
+              lineTension: "0",
+            },
           ],
         },
         options: {
           responsive: true,
           title: {
             display: true,
-            text: ''
-          },        
+            text: "",
+          },
           tooltips: {
-            mode: 'index',
+            mode: "index",
             intersect: false,
           },
           hover: {
-            mode: 'nearest',
-            intersect: true
+            mode: "nearest",
+            intersect: true,
           },
           scales: {
-            xAxes: [{
-              display: true,
-              scaleLabel: {
+            xAxes: [
+              {
                 display: true,
-                labelString: 'Month'
-              }
-            }],
-            yAxes: [{
-              display: true,
-              scaleLabel: {
+                scaleLabel: {
+                  display: true,
+                  labelString: "Month",
+                },
+              },
+            ],
+            yAxes: [
+              {
                 display: true,
                 labelString: 'TON'
               }
@@ -66,6 +83,6 @@ export default function LineGraph(props) {
       });
     }
   });
-     
-  return <canvas id="myBarChart" ref={chartRef} />;
+
+  return <canvas id="myLineChart" ref={chartRef} />;
 }

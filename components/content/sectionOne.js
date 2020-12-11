@@ -1,42 +1,31 @@
 import React, { useEffect, useState } from "react";
-import Typography from '@material-ui/core/Typography';
-import Card from '@material-ui/core/Card';
-import LineGraph from '../linegraph';
-import NeracaUpIcon from '@material-ui/icons/ExpandLess';
-import NeracaDownIcon from '@material-ui/icons/ExpandMore';
-import Box from '@material-ui/core/Box';
+import LineGraph from "../linegraph";
+import NeracaUpIcon from "@material-ui/icons/ExpandLess";
+import NeracaDownIcon from "@material-ui/icons/ExpandMore";
+import Box from "@material-ui/core/Box";
 import { DateTime } from "luxon";
-// material ui
-import {
-  makeStyles,
-  createMuiTheme,
-  ThemeProvider,
-} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
-export default function SectionOne({chart, surplus}) {
+export default function SectionOne({ chart, surplus }) {
   const [topBongkarVolumeData, setTopBongkarVolumeData] = useState(null);
   const [topMuatVolumeData, setTopMuatVolumeData] = useState(null);
 
   useEffect(() => {
-    bongkar(chart);          
-    muat(chart);          
+    bongkar(chart);
+    muat(chart);
   }, [chart]);
-
-  const month_name = function(dt){
-    let mlist = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
-    return mlist[dt.getMonth()];
-  };
 
   const bongkar = (data) => {
     const bongkar = [];
     let month = 1;
     let total = 0;
     data.forEach((item, index) => {
-      if(item.JENIS === "BONGKAR"){
+      if (item.JENIS === "BONGKAR") {
         const date = DateTime.fromISO(item.TGL_TRANSAKSI).month;
         if (date === month) {
-            item.SATUAN === "TON" ? (total += parseInt(item.VOLUME) * 1000) : (total += parseInt(item.VOLUME));
+          item.SATUAN === "TON"
+            ? (total += parseInt(item.VOLUME) * 1000)
+            : (total += parseInt(item.VOLUME));
         } else {
           bongkar.push(total);
           month++;
@@ -56,13 +45,15 @@ export default function SectionOne({chart, surplus}) {
     let month = 1;
     let total = 0;
     data.forEach((item, index) => {
-      if(item.JENIS === "MUAT"){
+      if (item.JENIS === "MUAT") {
         const date = DateTime.fromISO(item.TGL_TRANSAKSI).month;
         if (date === month) {
-            item.SATUAN === "TON" ? (total += parseInt(item.VOLUME) * 1000) : (total += parseInt(item.VOLUME));
+          item.SATUAN === "TON"
+            ? (total += parseInt(item.VOLUME) * 1000)
+            : (total += parseInt(item.VOLUME));
         } else {
           muat.push(total);
-          month++;    
+          month++;
           total = 0;
         }
         if (data.length === index + 1) {
@@ -76,32 +67,33 @@ export default function SectionOne({chart, surplus}) {
 
   return (
     <Grid container item direction="row" xs={12} spacing={4}>
-      <Grid item xs={12} md={8} lg={8}>  
-        <h2 align="center" style={{ color: "primary" }}>
-            Transaksi Keluar dan Masuk <br/> Per Bulanan
-        </h2>
-        <Box borderRadius={16} boxShadow={3}>
-          <LineGraph dataBongkar={topBongkarVolumeData} dataMuat={topMuatVolumeData}/>
-        </Box>                                
-      </Grid>
-      <Grid item xs={12} md={4} lg={4}>                                                  
-        <h2 align="center" color="primary">
-          Neraca Surplus Pedagangan     
-          <br/>
-          Bulan Ini              
-        </h2>
-        <Box width={1} boxShadow={3} style={{ padding: "20px" }}>
-            <h2 align="center">
-                { 
-                  (surplus < 0) ? 
-                    <NeracaDownIcon fontSize={'large'} style={{ color: '#7bd47b' }}/>
-                  :
-                    <NeracaUpIcon fontSize={'large'} style={{ color: '#7bd47b' }}/>
-                } 
-                {surplus} 
-            </h2>
+      <Grid item xs={12} md={8} lg={9}>
+        <h2>Transaksi Keluar dan Masuk Per Bulanan</h2>
+        <Box borderRadius={4} boxShadow={3}>
+          <LineGraph
+            dataBongkar={topBongkarVolumeData}
+            dataMuat={topMuatVolumeData}
+          />
         </Box>
       </Grid>
-    </Grid>      
+      <Grid item xs={12} md={4} lg={3}>
+        <h2>Neraca Surplus Pedagangan Bulan Ini</h2>
+        <Box
+          borderRadius={4}
+          width={1}
+          boxShadow={3}
+          style={{ padding: "20px" }}
+        >
+          <h2 align="center">
+            {surplus < 0 ? (
+              <NeracaDownIcon style={{ fontSize: "30px", color: "#7bd47b" }} />
+            ) : (
+              <NeracaUpIcon style={{ fontSize: "30px", color: "#7bd47b" }} />
+            )}
+            {surplus}
+          </h2>
+        </Box>
+      </Grid>
+    </Grid>
   );
 }

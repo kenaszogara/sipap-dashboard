@@ -11,9 +11,9 @@ import {
 import Grid from "@material-ui/core/Grid";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
-import Header from "./../components/sections/header";
-import Chart from "./../components/sections/chart";
-import Table from "./../components/sections/table";
+import Header from "../components/sections/header";
+import Chart from "../components/sections/chart";
+import Table from "../components/sections/table";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -118,7 +118,7 @@ export default function Home() {
     <div style={{ marginLeft: "4em", marginRight: "4em" }}>
       <Grid container spacing={2}>
         <Grid container item spacing={2} alignItems="baseline">
-          <h1>SIPAP Dashboard</h1>
+          <h1>Pelindo</h1>
           <span
             style={{
               marginLeft: "1em",
@@ -127,7 +127,7 @@ export default function Home() {
               color: "gray",
             }}
           >
-            2019
+            2020
           </span>
         </Grid>
 
