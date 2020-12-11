@@ -113,11 +113,11 @@ export default function Header({ data }) {
       </Grid>
       <Grid container item alignItems="center" xs={6} md={3} lg={2}>      
       </Grid>
-      <Grid container item alignItems="center" xs={6} md={3} lg={2}>
-        <Button variant="contained" color="primary" href="/manage">
-          Manage
-        </Button>
-      </Grid>
+      // <Grid container item alignItems="center" xs={6} md={3} lg={2}>
+      //   <Button variant="contained" color="primary" href="/manage">
+      //     Manage
+      //   </Button>
+      // </Grid>
 
     </Grid>
   );

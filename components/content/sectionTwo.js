@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
-export default function SectionOne(props) {  
+export default function SectionTwo(props) {  
   const {dataBapok} = props;  
   const [bapok, setBapok] = useState(null);
   const grouped = groupBy(dataBapok, komo => komo.bulan);
@@ -86,9 +86,9 @@ export default function SectionOne(props) {
   return (
     <Grid container item direction="row" xs={12} spacing={4}>
       <Grid item xs={12} md={12} lg={12}>  
-        <Typography variant="h6" align="center" color="primary">
+        <h2 align="center" color="primary">
             Neraca BAPOK
-        </Typography>
+        </h2>
         <Box borderRadius={16} boxShadow={3}>        
           <MaterialTable
             columns={[
@@ -121,7 +121,11 @@ export default function SectionOne(props) {
                 title: "Surplus/Minus",
                 field: "surplus",
                 type: "numeric",                
-                render: (rowData) => rowData.surplus < 0 ? <p style={{ color: "#f44336" }}>{rowData.surplus}</p> : <p style={{ color: "#4caf50" }}>{rowData.surplus}</p>,
+                render: (rowData) => 
+                  rowData.surplus < 0 ? 
+                    <p style={{ color: "#f44336", textAlign: "right" }}>{ new Intl.NumberFormat("id-ID").format(parseInt(rowData.surplus)) }</p> 
+                    : 
+                    <p style={{ color: "#4caf50", textAlign: "right" }}>{ new Intl.NumberFormat("id-ID").format(parseInt(rowData.surplus)) }</p>,
               },
             ]}
             title={null}

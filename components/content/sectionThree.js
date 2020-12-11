@@ -14,7 +14,7 @@ import {
 import Grid from "@material-ui/core/Grid";
 
 import MapChart from "../mapchart";
-
+  
 export default function SectionThree({ data }) {  
   const [bongkar, setBongkar] = useState(null);
   const [muat, setMuat] = useState(null);
@@ -48,22 +48,22 @@ export default function SectionThree({ data }) {
   return (
     <Grid container item direction="row" xs={12} spacing={4}>
       <Grid item lg={12}>
-        <Typography variant="h6" align="center" color="primary">
+        <h2 align="center" color="primary">
             Perdagangan Masuk / Keluar
-        </Typography>
+        </h2>
       </Grid>
 
       <Grid item xs={12} md={6} lg={6}>  
-        <Typography variant="h6" align="center" color="primary">
+        <h2 align="center" color="primary">
             Masuk
-        </Typography>
+        </h2>
         <MapChart title={"Masuk"} data={bongkar}/>                                   
       </Grid> 
 
       <Grid item xs={12} md={6} lg={6}>  
-        <Typography variant="h6" align="center" color="primary">
+        <h2 align="center" color="primary">
             Keluar
-        </Typography>        
+        </h2>        
         <MapChart title={"Keluar"} data={muat}/>                                   
       </Grid>              
     </Grid>      

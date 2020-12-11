@@ -2,13 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import getConfig from "next/config";
 import { useRouter } from "next/router";
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Card from '@material-ui/core/Card';
-import LineGraph from '../components/linegraph';
-import NeracaIcon from '@material-ui/icons/Eject';
-import Box from '@material-ui/core/Box';
+
 // material ui
 import {
   makeStyles,
@@ -18,11 +12,9 @@ import {
 import Grid from "@material-ui/core/Grid";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
-import SectionOne from "../components/content/sectionOne";
-import SectionTwo from "../components/content/sectionTwo";
-import SectionThree from "../components/content/sectionThree";
-
-import dataKomoditas from "../json/data";
+import Header from "./../components/sections/header";
+import Chart from "./../components/sections/chart";
+import Table from "./../components/sections/table";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -33,10 +25,6 @@ const theme = createMuiTheme({});
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-  },
-  appbar: {
-    padding: ".7em",
-    paddingLeft: "3em",
   },
   menuButton: {
     marginRight: 36,
@@ -82,32 +70,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-export default function Pelindo() {
+export default function Home() {
   const classes = useStyles();
 
   const router = useRouter();
 
   const [data, setData] = useState(null);
-  const [neracaBapok, setBapok] = useState(null);
-  const [neracaSurplus, setSurplus] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  useEffect(() => {
-    if (neracaSurplus == null) {     
-      let hasilNeracaSurplus = 0
-      const date = new Date();
-      const thisMonth = date.getMonth();
-      dataKomoditas.map( (row) => {
-        if(thisMonth === row.bulan){
-          hasilNeracaSurplus = hasilNeracaSurplus + row.ketersediaan - row.kebutuhan
-        }
-      })
-      setSurplus(hasilNeracaSurplus);      
-    }    
-  }, [neracaSurplus]);
-
+  // fetch data from api
   useEffect(() => {
     if (data == null) {
       setLoading(true);
@@ -118,7 +90,7 @@ export default function Pelindo() {
           const token = res.data.JWT;
           // console.log(token);
           axios
-            .get(`${host}api/v1/pelindo/2020/2021`, {
+            .get(`${host}api/v1/pelindo/2019/2020`, {
               headers: {
                 Authorization: token,
               },
@@ -144,37 +116,44 @@ export default function Pelindo() {
   }, [data]);
 
   return (
-    <div>      
-      <AppBar position="static" style={{ padding: ".7em", paddingLeft: "3em" }}>
-        <Toolbar>          
-          <Typography variant="h5" className={classes.title}>
-            SIPAP Dashboard
-          </Typography>
-        </Toolbar>
-      </AppBar>
-
-      {/* loading animation */}
-      {loading && (
-        <Grid container>
-          <Grid item className={classes.linearProgress} xs={12}>
-            <LinearProgress />
-          </Grid>
+    <div style={{ marginLeft: "4em", marginRight: "4em" }}>
+      <Grid container spacing={2}>
+        <Grid container item spacing={2} alignItems="baseline">
+          <h1>SIPAP Dashboard</h1>
+          <span
+            style={{
+              marginLeft: "1em",
+              fontSize: "18px",
+              fontWeight: "700",
+              color: "gray",
+            }}
+          >
+            2019
+          </span>
         </Grid>
-      )}
 
-      {!loading && !error && data && (
-        <div style={{ marginLeft: "4em", marginRight: "4em", marginTop: "1.3em" }}>
-          <Grid container spacing={2}>
-            
-            <SectionOne chart={data} surplus={neracaSurplus}/>            
-
-            <SectionTwo dataBapok={dataKomoditas}/>
-
-            <SectionThree data={data}/>
-
+        {/* loading animation */}
+        {loading && (
+          <Grid container spacing={4}>
+            <Grid item className={classes.linearProgress} xs={12}>
+              <LinearProgress />
+            </Grid>
           </Grid>
-        </div>
-      )}
+        )}
+
+        {!loading && !error && data && (
+          <Grid container spacing={4}>
+            {/* Header Data */}
+            <Header data={data} />
+
+            {/* Body Data */}
+            <Chart data={data} />
+
+            {/* Pelindo III Data Table */}
+            <Table data={data} />
+          </Grid>
+        )}
+      </Grid>
     </div>
   );
 }

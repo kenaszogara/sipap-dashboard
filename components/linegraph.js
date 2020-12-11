@@ -56,9 +56,13 @@ export default function LineGraph(props) {
                 labelString: 'TON'
               }
             }]
-          }
-        },
-        lineTension: 0,
+          },
+          elements: {
+            line: {
+                tension: 0 // disables bezier curves
+            }
+          },
+        },        
       });
     }
   });

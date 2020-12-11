@@ -2,6 +2,9 @@ import React, { useEffect } from "react";
 import Highcharts from "highcharts/highmaps";
 import mapDataIndonesia from "./mapindonesia";
 import Box from '@material-ui/core/Box';
+// import HighchartsExporting from 'highcharts/modules/exporting'
+
+// if (typeof Highcharts === "object") { HighchartsExporting(Highcharts) ; }
 
 export default function MapChart({ title, data }) {
   let dataMap = [
