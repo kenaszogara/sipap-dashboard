@@ -39,7 +39,8 @@ export default function SectionOne({chart, surplus}) {
             item.SATUAN === "TON" ? (total += parseInt(item.VOLUME) * 1000) : (total += parseInt(item.VOLUME));
         } else {
           bongkar.push(total);
-          month++;        
+          month++;
+          total = 0;
         }
         if (data.length === index + 1) {
           bongkar.push(total);
@@ -61,7 +62,8 @@ export default function SectionOne({chart, surplus}) {
             item.SATUAN === "TON" ? (total += parseInt(item.VOLUME) * 1000) : (total += parseInt(item.VOLUME));
         } else {
           muat.push(total);
-          month++;        
+          month++;    
+          total = 0;
         }
         if (data.length === index + 1) {
           muat.push(total);
@@ -73,28 +75,28 @@ export default function SectionOne({chart, surplus}) {
   };
 
   return (
-    <Grid container item direction="row" xs={12} spacing={4}>              
-      <Grid item xs={12} md={9} lg={9}>  
-        <Typography variant="h6" align="center" color="primary">
+    <Grid container item direction="row" xs={12} spacing={4}>
+      <Grid item xs={12} md={8} lg={8}>  
+        <h2 align="center" style={{ color: "primary" }}>
             Transaksi Keluar dan Masuk <br/> Per Bulanan
-        </Typography>
+        </h2>
         <Box borderRadius={16} boxShadow={3}>
           <LineGraph dataBongkar={topBongkarVolumeData} dataMuat={topMuatVolumeData}/>
         </Box>                                
       </Grid>
-      <Grid item xs={12} md={3} lg={3}>                                                  
-        <Typography variant="h6" align="center" color="primary">
+      <Grid item xs={12} md={4} lg={4}>                                                  
+        <h2 align="center" color="primary">
           Neraca Surplus Pedagangan     
           <br/>
           Bulan Ini              
-        </Typography>                
+        </h2>
         <Box width={1} boxShadow={3} style={{ padding: "20px" }}>
             <h2 align="center">
                 { 
                   (surplus < 0) ? 
-                    <NeracaDownIcon style={{ fontSize: "30px", color: '#7bd47b' }}/>
+                    <NeracaDownIcon fontSize={'large'} style={{ color: '#7bd47b' }}/>
                   :
-                    <NeracaUpIcon style={{ fontSize: "30px", color: '#7bd47b' }}/>
+                    <NeracaUpIcon fontSize={'large'} style={{ color: '#7bd47b' }}/>
                 } 
                 {surplus} 
             </h2>
