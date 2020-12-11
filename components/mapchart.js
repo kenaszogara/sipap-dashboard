@@ -12,9 +12,6 @@ export default function MapChart({ title, data }) {
   var data = [["id-jt", data]];
 
   const mapOptions = {
-    chart: {
-      map: mapDataIndonesia,
-    },
     title: {
       text: "Perdagangan " + title,
     },

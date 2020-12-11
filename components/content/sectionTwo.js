@@ -40,6 +40,7 @@ export default function SectionTwo(props) {
   useEffect(() => {
     dataBapok.sort((a, b) => (a.bulan > b.bulan ? 1 : -1));
     groupDataBapok(dataBapok);
+    // console.log(grouped);
   }, [dataBapok]);
 
   const groupDataBapok = (data) => {

@@ -16,6 +16,7 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import SectionOne from "../components/content/sectionOne";
 import SectionTwo from "../components/content/sectionTwo";
 import SectionThree from "../components/content/sectionThree";
+import SectionFour from "../components/content/sectionFour";
 
 import dataKomoditas from "../json/data";
 
@@ -120,6 +121,8 @@ export default function Pelindo() {
             <SectionTwo dataBapok={dataKomoditas} />
 
             <SectionThree data={data} />
+
+            <SectionFour dataBapok={dataKomoditas} />
           </Grid>
         </div>
       )}

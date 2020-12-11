@@ -59,7 +59,7 @@ export default function SectionThree({ data }) {
       </Grid>
       <Grid item xs={12} md={6} lg={6}>
         <Box borderRadius={16} boxShadow={3}>
-          <MapChart title={"Masuk"} data={muat} />
+          <MapChart title={"Keluar"} data={muat} />
         </Box>
       </Grid>
     </Grid>
