@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Dashboard from '../../../components/manage/dashboard/dashboard';
-import Home from '../../../components/manage/instansi/index'
+import Dashboard from './../../../components/manage/dashboard/Dashboard';
+import Home from './../../../components/manage/instansi/index'
 import getConfig from "next/config";
 import axios from "axios";
 
