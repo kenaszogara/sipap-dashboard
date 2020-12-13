@@ -6,6 +6,10 @@ import { useRouter } from "next/router";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import IconButton from "@material-ui/core/IconButton";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 import MaterialTable from "material-table";
 
@@ -91,8 +95,20 @@ export default function Jembatan() {
   }, [data]);
 
   return (
-    <div style={{ marginLeft: "4em", marginRight: "4em" }}>
-      <Grid container spacing={2}>
+    <div>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton onClick={() => router.push("/")}>
+            <ArrowBackIcon style={{ color: "white" }} />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+
+      <Grid
+        container
+        spacing={2}
+        style={{ marginLeft: "4em", marginRight: "4em" }}
+      >
         <Grid container item spacing={2} alignItems="baseline">
           <h1>Jembatang Timbang</h1>
         </Grid>

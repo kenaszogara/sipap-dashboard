@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import Chart from "chart.js";
 
 export default function LineGraph(props) {
-  const { dataBongkar, dataMuat } = props;
+  const { data } = props;
   const chartRef = useRef(null);
 
   useEffect(() => {
@@ -24,24 +24,7 @@ export default function LineGraph(props) {
             "November",
             "December",
           ],
-          datasets: [
-            {
-              label: "keluar",
-              backgroundColor: "#fe7979",
-              borderColor: "#fe7979",
-              data: dataMuat,
-              fill: false,
-              lineTension: "0",
-            },
-            {
-              label: "Masuk",
-              fill: false,
-              backgroundColor: "#6a7df3",
-              borderColor: "#6a7df3",
-              data: dataBongkar,
-              lineTension: "0",
-            },
-          ],
+          datasets: data,
         },
         options: {
           responsive: true,

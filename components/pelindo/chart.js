@@ -103,8 +103,12 @@ export default function Chart({ data }) {
                 "Nov",
                 "Dec",
               ]}
-              datasets={barData}
-              backgroundColor={"rgb(242, 199, 110, 0.5)"}
+              datasets={[
+                {
+                  backgroundColor: "rgb(242, 199, 110, 0.5)",
+                  data: barData,
+                },
+              ]}
               options={{
                 legend: {
                   display: false,

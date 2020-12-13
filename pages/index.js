@@ -157,17 +157,17 @@ export default function Home() {
         </Grid>
       )}
 
-      {!loading && !error && data && (
+      {data && dataJembatan && (
         <div
           style={{ marginLeft: "4em", marginRight: "4em", marginTop: "1.3em" }}
         >
-          <Grid container xs={10} spacing={4} style={{ margin: "auto" }}>
-            <Grid item xs={12}>
+          <Grid container item xs={12} spacing={4}>
+            <Grid item xs={10} style={{ margin: "auto" }}>
               <Image
-                src="https://sipap.kemendag.go.id/assets/images/sipap_dashboard.png"
+                src="/../public/dashboard.png"
                 alt="Dashboard Image"
-                width={700}
-                height={200}
+                width={500}
+                height={250}
                 layout="responsive"
                 loading="lazy"
                 className="hero-image"
