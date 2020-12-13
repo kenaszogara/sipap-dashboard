@@ -3,22 +3,13 @@ import axios from "axios";
 import getConfig from "next/config";
 import { useRouter } from "next/router";
 // material ui
-import {
-  makeStyles,
-  createMuiTheme,
-  ThemeProvider,
-} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
-import Header from "../components/pelindo/header";
-import Chart from "../components/pelindo/chart";
-import Table from "../components/pelindo/table";
+import MaterialTable from "material-table";
 
 const { publicRuntimeConfig } = getConfig();
-
-// material ui theme
-const theme = createMuiTheme({});
 
 // material ui css
 const useStyles = makeStyles((theme) => ({
@@ -69,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Pelindo() {
+export default function Jembatan() {
   const classes = useStyles();
 
   const router = useRouter();
@@ -84,27 +75,12 @@ export default function Pelindo() {
       setLoading(true);
       const host = publicRuntimeConfig.API_URL || "http://localhost:5000/";
       axios
-        .get(`${host}api/v1/pelindo/auth/PP3_USR1`)
+        .get(`${host}api/v1/jembatanTimbang`)
         .then((res) => {
-          const token = res.data.JWT;
-          // console.log(token);
-          axios
-            .get(`${host}api/v1/pelindo/2020/2021`, {
-              headers: {
-                Authorization: token,
-              },
-            })
-            .then((res) => {
-              // console.log(res.data);
-              setData(res.data);
-              setLoading(false);
-              setError(false);
-            })
-            .catch((err) => {
-              console.log(err);
-              setLoading(false);
-              setError(true);
-            });
+          console.log(res);
+          setData(res.data.data);
+          setLoading(false);
+          setError(false);
         })
         .catch((err) => {
           console.log(err);
@@ -118,17 +94,7 @@ export default function Pelindo() {
     <div style={{ marginLeft: "4em", marginRight: "4em" }}>
       <Grid container spacing={2}>
         <Grid container item spacing={2} alignItems="baseline">
-          <h1>Pelindo</h1>
-          <span
-            style={{
-              marginLeft: "1em",
-              fontSize: "18px",
-              fontWeight: "700",
-              color: "gray",
-            }}
-          >
-            2020
-          </span>
+          <h1>Jembatang Timbang</h1>
         </Grid>
 
         {/* loading animation */}
@@ -141,15 +107,34 @@ export default function Pelindo() {
         )}
 
         {!loading && !error && data && (
-          <Grid container spacing={4}>
-            {/* Header Data */}
-            <Header data={data} />
-
-            {/* Body Data */}
-            <Chart data={data} />
-
-            {/* Pelindo III Data Table */}
-            <Table data={data} />
+          <Grid container item xs={10} spacing={4}>
+            <MaterialTable
+              columns={[
+                {
+                  title: "Tgl",
+                  field: "tanggal_str",
+                  type: "date",
+                  cellStyle: {
+                    width: 1,
+                    maxWidth: 1,
+                  },
+                  headerStyle: {
+                    width: 1,
+                    maxWidth: 1,
+                  },
+                },
+                { title: "Muatan", field: "muatan" },
+                { title: "Berat Kosong", field: "berat_kosong" },
+                { title: "JBI", field: "jbi" },
+                { title: "Kelebihan Muatan", field: "kelebihan_muatan" },
+              ]}
+              data={data}
+              title="Jembatan Timbang"
+              options={{
+                pageSize: 10,
+                pageSizeOptions: [10, 20, 30, 50, 100],
+              }}
+            />
           </Grid>
         )}
       </Grid>

@@ -1,30 +1,26 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import getConfig from "next/config";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-// material ui
-import {
-  makeStyles,
-  createMuiTheme,
-  ThemeProvider,
-} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import LinearProgress from "@material-ui/core/LinearProgress";
-
-import SectionOne from "../components/content/sectionOne";
-import SectionTwo from "../components/content/sectionTwo";
-import SectionThree from "../components/content/sectionThree";
-import SectionFour from "../components/content/sectionFour";
-
-import dataKomoditas from "../json/data";
 import Button from "@material-ui/core/Button";
 
-const { publicRuntimeConfig } = getConfig();
+import SectionOne from "./../components/content/sectionOne";
+import SectionTwo from "./../components/content/sectionTwo";
+import SectionThree from "./../components/content/sectionThree";
+import SectionFour from "./../components/content/sectionFour";
+import Table from "./../components/pelindo/table";
+import MaterialTable from "material-table";
 
-// material ui theme
-const theme = createMuiTheme({});
+import dataKomoditas from "./../json/data";
+
+const { publicRuntimeConfig } = getConfig();
 
 // material ui css
 const useStyles = makeStyles((theme) => ({
@@ -39,8 +35,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
   const classes = useStyles();
+  const router = useRouter();
 
   const [data, setData] = useState(null);
+  const [dataJembatan, setDataJembatan] = useState(null);
   const [neracaSurplus, setSurplus] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -65,7 +63,7 @@ export default function Home() {
       setLoading(true);
       const host = publicRuntimeConfig.API_URL || "http://localhost:5000/";
       axios
-        .get(`${host}api/v1/auth/PP3_USR1`)
+        .get(`${host}api/v1/pelindo/auth/PP3_USR1`)
         .then((res) => {
           const token = res.data.JWT;
           // console.log(token);
@@ -95,11 +93,48 @@ export default function Home() {
     }
   }, [data]);
 
+  // fetch data from api
+  useEffect(() => {
+    if (dataJembatan == null) {
+      setLoading(true);
+      const host = publicRuntimeConfig.API_URL || "http://localhost:5000/";
+      axios
+        .get(`${host}api/v1/jembatanTimbang`)
+        .then((res) => {
+          console.log(res);
+          setDataJembatan(res.data.data);
+          setLoading(false);
+          setError(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+          setError(true);
+        });
+    }
+  }, [dataJembatan]);
+
   return (
     <div>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h5">SIPAP Dashboard</Typography>
+          <Typography variant="h5">SIPAP</Typography>
+          <Button
+            style={{ marginLeft: "4em", color: "#f5f5f5" }}
+            onClick={() => {
+              router.push("/pelindo");
+            }}
+          >
+            Pelindo
+          </Button>
+          <Button
+            style={{ marginLeft: "1em", color: "#f5f5f5" }}
+            onClick={() => {
+              router.push("/jembatan");
+            }}
+          >
+            Jembatan Timbang
+          </Button>
           <Button
             variant="contained"
             color="secondary"
@@ -126,14 +161,59 @@ export default function Home() {
         <div
           style={{ marginLeft: "4em", marginRight: "4em", marginTop: "1.3em" }}
         >
-          <Grid container spacing={4}>
+          <Grid container xs={10} spacing={4} style={{ margin: "auto" }}>
+            <Grid item xs={12}>
+              <Image
+                src="https://sipap.kemendag.go.id/assets/images/sipap_dashboard.png"
+                alt="Dashboard Image"
+                width={700}
+                height={200}
+                layout="responsive"
+                loading="lazy"
+                className="hero-image"
+              />
+            </Grid>
+
             <SectionOne chart={data} surplus={neracaSurplus} />
 
             <SectionTwo dataBapok={dataKomoditas} />
 
+            <SectionFour dataBapok={dataKomoditas} />
+
+            {/* Pelindo III Data Table */}
+            <Table data={data} />
+
             <SectionThree data={data} />
 
-            <SectionFour dataBapok={dataKomoditas} />
+            <Grid item xs={12}>
+              <MaterialTable
+                columns={[
+                  {
+                    title: "Tgl",
+                    field: "tanggal_str",
+                    type: "date",
+                    cellStyle: {
+                      width: 1,
+                      maxWidth: 1,
+                    },
+                    headerStyle: {
+                      width: 1,
+                      maxWidth: 1,
+                    },
+                  },
+                  { title: "Muatan", field: "muatan" },
+                  { title: "Berat Kosong", field: "berat_kosong" },
+                  { title: "JBI", field: "jbi" },
+                  { title: "Kelebihan Muatan", field: "kelebihan_muatan" },
+                ]}
+                data={dataJembatan}
+                title="Jembatan Timbang"
+                options={{
+                  pageSize: 10,
+                  pageSizeOptions: [10, 20, 30, 50, 100],
+                }}
+              />
+            </Grid>
           </Grid>
         </div>
       )}

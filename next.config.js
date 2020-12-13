@@ -6,4 +6,7 @@ module.exports = {
     // Will be available on both server and client
     API_URL: process.env.REACT_APP_API_URL,
   },
+  images: {
+    domains: ["sipap.kemendag.go.id", "localhost"],
+  },
 };

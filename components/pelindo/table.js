@@ -158,11 +158,11 @@ export default function Table({ data }) {
             },
             {
               title: "Pelabuhan Muat",
-              field: "PELB_MUAT",
+              field: "PROV_MUAT.nama",
             },
             {
               title: "Pelabuhan Bongkar",
-              field: "PELB_BONGKAR",
+              field: "PROV_BONGKAR.nama",
             },
           ]}
           data={data}
