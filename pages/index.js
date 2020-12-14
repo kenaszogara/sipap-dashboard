@@ -39,6 +39,7 @@ export default function Home() {
 
   const [data, setData] = useState(null);
   const [dataJembatan, setDataJembatan] = useState(null);
+  const [dataKai, setDataKai] = useState(null);
   const [neracaSurplus, setSurplus] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -114,6 +115,27 @@ export default function Home() {
     }
   }, [dataJembatan]);
 
+  // fetch data from api
+  useEffect(() => {
+    if (dataKai == null) {
+      setLoading(true);
+      const host = publicRuntimeConfig.API_URL || "http://localhost:5000/";
+      axios
+        .get(`${host}api/v1/kai`)
+        .then((res) => {
+          // console.log(res);
+          setDataKai(res.data.data);
+          setLoading(false);
+          setError(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+          setError(true);
+        });
+    }
+  }, [dataKai]);
+
   return (
     <div>
       <AppBar position="static">
@@ -134,6 +156,14 @@ export default function Home() {
             }}
           >
             Jembatan Timbang
+          </Button>
+          <Button
+            style={{ marginLeft: "1em", color: "#f5f5f5" }}
+            onClick={() => {
+              router.push("/kai");
+            }}
+          >
+            Kereta Api Indonesia
           </Button>
           <Button
             variant="contained"
@@ -164,12 +194,11 @@ export default function Home() {
           <Grid container item xs={12} spacing={4}>
             <Grid item xs={10} style={{ margin: "auto" }}>
               <Image
-                src="/../public/dashboard.png"
+                src="http://159.65.2.14/sipap/images/dashboard.png"
                 alt="Dashboard Image"
                 width={500}
                 height={250}
                 layout="responsive"
-                loading="lazy"
                 className="hero-image"
               />
             </Grid>
@@ -208,6 +237,37 @@ export default function Home() {
                 ]}
                 data={dataJembatan}
                 title="Jembatan Timbang"
+                options={{
+                  pageSize: 10,
+                  pageSizeOptions: [10, 20, 30, 50, 100],
+                }}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <MaterialTable
+                columns={[
+                  {
+                    title: "Tgl",
+                    field: "tgl",
+                    type: "date",
+                    cellStyle: {
+                      width: 1,
+                      maxWidth: 1,
+                    },
+                    headerStyle: {
+                      width: 1,
+                      maxWidth: 1,
+                    },
+                  },
+                  { title: "STN Asal", field: "stasiun_asal" },
+                  { title: "STN Tujuan", field: "stasiun_tujuan" },
+                  { title: "Komoditas", field: "komoditas" },
+                  { title: "Berat", field: "berat" },
+                  { title: "Satuan", field: "satuan" },
+                ]}
+                data={dataKai}
+                title="KAI"
                 options={{
                   pageSize: 10,
                   pageSizeOptions: [10, 20, 30, 50, 100],

@@ -41,7 +41,9 @@ export default function SectionOne({ chart }) {
         typeof topMuatVolumeData[month] != "undefined"
           ? topMuatVolumeData[month]
           : 0;
-      setSurplus(numberWithCommas(Number(bongkar - muat)));
+
+      const val = (bongkar - muat) / 1000;
+      setSurplus(numberWithCommas(Number(val)));
     }
   }, [topBongkarVolumeData, topMuatVolumeData]);
 
@@ -175,14 +177,14 @@ export default function SectionOne({ chart }) {
           <h1
             align="center"
             className="neraca-surplus"
-            style={surplus < 0 ? { color: "#FE7979" } : { color: "#009688" }}
+            style={surplus < 0 ? { color: "#009688" } : { color: "#FE7979" }}
           >
             {surplus < 0 ? (
-              <NeracaDownIcon style={{ fontSize: "30px", color: "#FE7979" }} />
-            ) : (
               <NeracaUpIcon style={{ fontSize: "30px", color: "#009688" }} />
+            ) : (
+              <NeracaDownIcon style={{ fontSize: "30px", color: "#FE7979" }} />
             )}
-            {surplus} m<sup>3</sup>
+            {surplus} ton
           </h1>
           <div>
             <br />

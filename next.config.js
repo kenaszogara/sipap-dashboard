@@ -7,6 +7,6 @@ module.exports = {
     API_URL: process.env.REACT_APP_API_URL,
   },
   images: {
-    domains: ["sipap.kemendag.go.id", "localhost"],
+    domains: ["159.65.2.14", "localhost"],
   },
 };
