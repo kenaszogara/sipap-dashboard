@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import LineGraph from "./../linegraph";
 import BarGraph from "./../bargraph";
+import { makeStyles } from "@material-ui/core/styles";
 import NeracaUpIcon from "@material-ui/icons/ExpandLess";
 import NeracaDownIcon from "@material-ui/icons/ExpandMore";
 import Box from "@material-ui/core/Box";
@@ -8,13 +9,32 @@ import { DateTime } from "luxon";
 import Grid from "@material-ui/core/Grid";
 import { harga } from "./../../json/harga";
 import { ntp } from "./../../json/ntp";
+import { ppj } from "./../../json/ppj";
 
 // format number
 const numberWithCommas = (x) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 };
 
+// material ui css
+const useStyles = makeStyles((theme) => ({
+  surplus: {
+    color: "#009688",
+    marginLeft: "1em",
+    fontSize: "14px",
+    fontWeight: "700",
+  },
+  deficit: {
+    color: "#FE7979",
+    marginLeft: "1em",
+    fontSize: "14px",
+    fontWeight: "700",
+  },
+}));
+
 export default function SectionOne({ chart }) {
+  const classes = useStyles();
+
   const [topBongkarVolumeData, setTopBongkarVolumeData] = useState(null);
   const [topMuatVolumeData, setTopMuatVolumeData] = useState(null);
   const [surplus, setSurplus] = useState(null);
@@ -141,8 +161,78 @@ export default function SectionOne({ chart }) {
 
   return (
     <Grid container item direction="row" xs={12} spacing={4}>
+      <Grid container item direction="column" xs={12} md={4} lg={3} spacing={2}>
+        <Grid item>
+          <h2>Neraca Perdagangan</h2>
+          <Box
+            borderRadius={4}
+            width={1}
+            boxShadow={3}
+            style={{ padding: "20px" }}
+          >
+            <h1
+              align="center"
+              className="neraca-surplus"
+              style={surplus < 0 ? { color: "#009688" } : { color: "#FE7979" }}
+            >
+              {surplus < 0 ? (
+                <NeracaUpIcon style={{ fontSize: "30px", color: "#009688" }} />
+              ) : (
+                <NeracaDownIcon
+                  style={{ fontSize: "30px", color: "#FE7979" }}
+                />
+              )}
+              {surplus} ton
+            </h1>
+            <div>
+              <br />
+              <ul
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  padding: 0,
+                }}
+              >
+                <li style={{ marginRight: "1em" }}>
+                  <NeracaUpIcon
+                    style={{ fontSize: "30px", color: "#009688" }}
+                  />
+                  Surplus
+                </li>
+                <li>
+                  <NeracaDownIcon
+                    style={{ fontSize: "30px", color: "#FE7979" }}
+                  />
+                  Deficit
+                </li>
+              </ul>
+            </div>
+          </Box>
+        </Grid>
+        <Grid container item direction="column" spacing={2}>
+          <h2 style={{ paddingLeft: "0.6em" }}>Data Provinsi</h2>
+          {ppj &&
+            ppj.map((item, index) => (
+              <Grid item key={index}>
+                <Box
+                  borderRadius={4}
+                  width={1}
+                  boxShadow={3}
+                  style={{ padding: "20px" }}
+                >
+                  <b>{item.nama}</b>:
+                  {item.prosentase > 0 ? (
+                    <span className={classes.surplus}>+{item.prosentase}%</span>
+                  ) : (
+                    <span className={classes.deficit}>{item.prosentase}%</span>
+                  )}
+                </Box>
+              </Grid>
+            ))}
+        </Grid>
+      </Grid>
       <Grid item xs={12} md={8} lg={9}>
-        <h2>Transaksi Keluar dan Masuk Per Bulanan</h2>
+        <h2>Data Perdagangan Keluar dan Masuk</h2>
         <Box borderRadius={4} boxShadow={3}>
           <LineGraph
             data={[
@@ -164,45 +254,6 @@ export default function SectionOne({ chart }) {
               },
             ]}
           />
-        </Box>
-      </Grid>
-      <Grid item xs={12} md={4} lg={3}>
-        <h2>Neraca Surplus Pedagangan Bulan Ini</h2>
-        <Box
-          borderRadius={4}
-          width={1}
-          boxShadow={3}
-          style={{ padding: "20px" }}
-        >
-          <h1
-            align="center"
-            className="neraca-surplus"
-            style={surplus < 0 ? { color: "#009688" } : { color: "#FE7979" }}
-          >
-            {surplus < 0 ? (
-              <NeracaUpIcon style={{ fontSize: "30px", color: "#009688" }} />
-            ) : (
-              <NeracaDownIcon style={{ fontSize: "30px", color: "#FE7979" }} />
-            )}
-            {surplus} ton
-          </h1>
-          <div>
-            <br />
-            <ul
-              style={{ display: "flex", justifyContent: "center", padding: 0 }}
-            >
-              <li style={{ marginRight: "1em" }}>
-                <NeracaUpIcon style={{ fontSize: "30px", color: "#009688" }} />
-                Surplus
-              </li>
-              <li>
-                <NeracaDownIcon
-                  style={{ fontSize: "30px", color: "#FE7979" }}
-                />
-                Deficit
-              </li>
-            </ul>
-          </div>
         </Box>
       </Grid>
 
@@ -246,7 +297,7 @@ export default function SectionOne({ chart }) {
           </Box>
         </Grid>
         <Grid item xs={12} lg={6}>
-          <h2>Data Harga Komoditas</h2>
+          <h2>Data Harga SP2KP</h2>
           <Box
             borderRadius={4}
             width={1}
@@ -257,12 +308,12 @@ export default function SectionOne({ chart }) {
               labels={dataHarga.labels}
               datasets={[
                 {
-                  label: "Oktober",
+                  label: "12/10/2020",
                   backgroundColor: "#FE7979",
                   data: dataHarga.dataOktober,
                 },
                 {
-                  label: "Nopember",
+                  label: "12/11/2020",
                   backgroundColor: "#009688",
                   data: dataHarga.dataNopember,
                 },
