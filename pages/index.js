@@ -212,7 +212,7 @@ export default function Home() {
             color="secondary"
             style={{ marginLeft: "auto" }}
             onClick={() =>
-              (window.location.href = "http://159.65.2.14/sipap/login")
+              (window.location.href = "http://18.140.74.118/sipap/login")
             }
           >
             Integrasi Aplikasi
