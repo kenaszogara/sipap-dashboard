@@ -278,7 +278,7 @@ export default function Home() {
                     { title: "Nov", field: "november" },
                   ]}
                   data={dataPrognosa}
-                  title="Jembatan Timbang"
+                  title=""
                   options={{
                     pageSize: 10,
                     pageSizeOptions: [10, 20, 30, 50, 100],

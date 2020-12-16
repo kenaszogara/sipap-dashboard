@@ -155,7 +155,7 @@ export default function SectionTwo(props) {
                     ),
                 },
               ]}
-              title="Neraca Bapok"
+              title="Neraca Bapok (Satuan komoditas dalam (ton) )"
               data={bapok}
               options={{
                 search: false,
