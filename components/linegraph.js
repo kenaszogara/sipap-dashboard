@@ -1,6 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import Chart from "chart.js";
 
+// format number
+const numberWithCommas = (x) => {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+};
+
 export default function LineGraph(props) {
   const { data } = props;
   const chartRef = useRef(null);
@@ -35,6 +40,14 @@ export default function LineGraph(props) {
           tooltips: {
             mode: "index",
             intersect: false,
+            callbacks: {
+              label: function (tooltipItem, data) {
+                let label = tooltipItem.datasetIndex == 0 ? "Keluar" : "Masuk";
+                let value = `${numberWithCommas(tooltipItem.value)} ton` || "";
+
+                return `${label}: ${value}`;
+              },
+            },
           },
           hover: {
             mode: "nearest",

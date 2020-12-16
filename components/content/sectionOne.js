@@ -234,16 +234,16 @@ export default function SectionOne({ chart }) {
                 </Box>
               </Grid>
             ))}
-            <h4>Pertumbuhan sektor perdagangan Jawa Tengah (%)</h4>
+          <h4>Pertumbuhan sektor perdagangan Jawa Tengah (%)</h4>
         </Grid>
       </Grid>
       <Grid item xs={12} md={8} lg={9}>
         <h2>Data Perdagangan Keluar dan Masuk (ton)</h2>
         <Box borderRadius={4} boxShadow={3}>
-          <LineGraph            
+          <LineGraph
             data={[
               {
-                label: "keluar",
+                label: "Keluar",
                 backgroundColor: "#fe7979",
                 borderColor: "#fe7979",
                 data: topMuatVolumeData,
