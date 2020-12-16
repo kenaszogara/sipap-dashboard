@@ -210,7 +210,12 @@ export default function SectionOne({ chart }) {
           </Box>
         </Grid>
         <Grid container item direction="column" spacing={2}>
-          <h2 style={{ paddingLeft: "0.6em" }}>Data Provinsi</h2>
+          <h2 style={{ paddingLeft: "0.6em", marginBottom: "0" }}>
+            Data Provinsi
+          </h2>
+          <h3 style={{ paddingLeft: "0.6em", marginTop: "0.3em" }}>
+            Pertumbuhan Perdagangan Provinsi Jawa Tengah (%)
+          </h3>
           {ppj &&
             ppj.map((item, index) => (
               <Grid item key={index}>

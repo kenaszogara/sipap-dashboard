@@ -208,6 +208,22 @@ export default function Home() {
             Kereta Api Indonesia
           </Button>
           <Button
+            style={{ marginLeft: "1em", color: "#f5f5f5" }}
+            onClick={() => {
+              router.push("#bigData");
+            }}
+          >
+            Big Data Analysis
+          </Button>
+          <Button
+            style={{ marginLeft: "1em", color: "#f5f5f5" }}
+            onClick={() => {
+              router.push("/ews");
+            }}
+          >
+            Early Warning System
+          </Button>
+          <Button
             variant="contained"
             color="secondary"
             style={{ marginLeft: "auto" }}
@@ -221,7 +237,7 @@ export default function Home() {
       </AppBar>
 
       {/* loading animation */}
-      {loading && (
+      {loading && !data && (
         <Grid container>
           <Grid item className={classes.linearProgress} xs={12}>
             <LinearProgress color="secondary" />
@@ -247,6 +263,7 @@ export default function Home() {
 
             <SectionOne chart={data} surplus={neracaSurplus} />
 
+            <h2 style={{ paddingLeft: "0.8em" }}>Neraca Komoditas</h2>
             <SectionTwo dataBapok={dataKomoditas} />
 
             <h2 style={{ paddingLeft: "0.8em" }}>Data Konsumsi</h2>
@@ -256,9 +273,10 @@ export default function Home() {
             <h2 style={{ paddingLeft: "0.8em" }}>Data Export / Import</h2>
             <Table data={data} />
 
+            <h2 style={{ paddingLeft: "0.8em" }}>Geo Tagging</h2>
             <SectionThree data={data} />
 
-            <Grid item xs={12}>
+            <Grid item xs={12} id="bigData">
               <h2>Data Produksi</h2>
               {dataPrognosa && (
                 <MaterialTable
@@ -278,7 +296,6 @@ export default function Home() {
                     { title: "Nov", field: "november" },
                   ]}
                   data={dataPrognosa}
-                  title="Jembatan Timbang"
                   options={{
                     pageSize: 10,
                     pageSizeOptions: [10, 20, 30, 50, 100],
@@ -304,7 +321,7 @@ export default function Home() {
                     { title: "Komoditas", field: "komoditas" },
                   ]}
                   data={dataTdpud}
-                  title="SP2KP"
+                  title="TDPUD"
                   options={{
                     pageSize: 10,
                     pageSizeOptions: [10, 20, 30, 50, 100],

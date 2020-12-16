@@ -100,7 +100,6 @@ export default function SectionTwo(props) {
   return (
     <Grid container item direction="row" xs={12} spacing={4}>
       <Grid item xs={12} md={12} lg={12}>
-        <h2>Neraca Komoditas</h2>
         <Box borderRadius={16} boxShadow={3}>
           {bapok && (
             <MaterialTable
