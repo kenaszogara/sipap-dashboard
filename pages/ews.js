@@ -9,11 +9,8 @@ import Grid from "@material-ui/core/Grid";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Box from "@material-ui/core/Box";
 
-import SectionOne from "./../components/content/sectionOne";
 import SectionTwo from "./../components/content/sectionTwo";
-import SectionThree from "./../components/content/sectionThree";
 import SectionFour from "./../components/content/sectionFour";
-import Table from "./../components/pelindo/table";
 import MaterialTable from "material-table";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -39,6 +36,7 @@ export default function Home() {
   const router = useRouter();
 
   const [data, setData] = useState(null);
+  const [dataInflasi, setDataInflasi] = useState(null);
   const [neracaSurplus, setSurplus] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -93,6 +91,26 @@ export default function Home() {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (dataInflasi == null) {
+      setLoading(true);
+      const host = publicRuntimeConfig.API_URL || "http://localhost:5000/";
+      axios
+        .get(`${host}api/v1/inflasi`)
+        .then((res) => {
+          // console.log(res);
+          setDataInflasi(res.data.data);
+          setLoading(false);
+          setError(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+          setError(true);
+        });
+    }
+  }, [dataInflasi]);
+
   return (
     <div>
       <AppBar position="static">
@@ -130,6 +148,34 @@ export default function Home() {
                 Info: Kondisi surplus perdagangan. Semua Aman.
               </span>
             </Box>
+
+            <Grid item xs={12}>
+              <h2>Data Inflasi</h2>
+              {dataInflasi && (
+                <MaterialTable
+                  columns={[
+                    { title: "Tahun", field: "tahun" },
+                    { title: "Jan", field: "jan" },
+                    { title: "Feb", field: "feb" },
+                    { title: "Mar", field: "mar" },
+                    { title: "Apr", field: "apr" },
+                    { title: "Mei", field: "mei" },
+                    { title: "Jun", field: "jun" },
+                    { title: "Jul", field: "jul" },
+                    { title: "Agust", field: "agust" },
+                    { title: "Sep", field: "sep" },
+                    { title: "Okt", field: "okt" },
+                    { title: "Nov", field: "nov" },
+                    { title: "Des", field: "des" },
+                  ]}
+                  data={dataInflasi}
+                  options={{
+                    pageSize: 5,
+                    pageSizeOptions: [5, 10, 20, 30, 50, 100],
+                  }}
+                />
+              )}
+            </Grid>
 
             <SectionTwo dataBapok={dataKomoditas} />
 
