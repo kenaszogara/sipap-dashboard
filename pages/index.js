@@ -17,7 +17,6 @@ import SectionTwo from "./../components/content/sectionTwo";
 import SectionThree from "./../components/content/sectionThree";
 import SectionFour from "./../components/content/sectionFour";
 import Table from "./../components/pelindo/table";
-import Loader from "./../components/placeholder/loader";
 
 import dataKomoditas from "./../json/data";
 
