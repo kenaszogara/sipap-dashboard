@@ -18,7 +18,7 @@ import SectionThree from "./../components/content/sectionThree";
 import SectionFour from "./../components/content/sectionFour";
 import Table from "./../components/pelindo/table";
 
-import dataKomoditas from "./../json/data";
+// import dataKomoditas from "./../json/data";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -38,6 +38,8 @@ export default function Home() {
   const router = useRouter();
 
   const [data, setData] = useState(null);
+  const [dataKomoditas, setDataKomoditas] = useState(null);
+  const [dataHargaPpjNtp, setDataHargaPpjNtp] = useState(null);
   const [dataJembatan, setDataJembatan] = useState(null);
   const [dataKai, setDataKai] = useState(null);
   const [dataPrognosa, setDataPrognosa] = useState(null);
@@ -47,7 +49,7 @@ export default function Home() {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    if (neracaSurplus == null) {
+    if (neracaSurplus == null && dataKomoditas != null) {
       let hasilNeracaSurplus = 0;
       const date = new Date();
       const thisMonth = date.getMonth();
@@ -59,7 +61,7 @@ export default function Home() {
       });
       setSurplus(hasilNeracaSurplus);
     }
-  }, [neracaSurplus]);
+  }, [neracaSurplus, dataKomoditas]);
 
   useEffect(() => {
     if (data == null) {
@@ -95,6 +97,56 @@ export default function Home() {
         });
     }
   }, [data]);
+
+  // fetch data from api
+  useEffect(() => {
+    if (dataKomoditas == null) {
+      setLoading(true);
+      const host = publicRuntimeConfig.API_URL || "http://localhost:5000/";
+      axios
+        .get(`${host}api/v1/bapok`)
+        .then((res) => {
+          console.log(res);
+          setDataKomoditas(res.data.data);
+          setLoading(false);
+          setError(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+          setError(true);
+        });
+    }
+  }, [dataKomoditas]);
+
+  // fetch data from api
+  useEffect(() => {
+    if (dataHargaPpjNtp == null) {
+      setLoading(true);
+      const host = publicRuntimeConfig.API_URL || "http://localhost:5000/";
+      const harga = axios.get(`${host}api/v1/bapok`);
+      const ppj = axios.get(`${host}api/v1/ppj`);
+      const ntp = axios.get(`${host}api/v1/ntp`);
+
+      axios
+        .all([harga, ppj, ntp])
+        .then((res) => {
+          console.log(res);
+          setDataHargaPpjNtp({
+            harga: res[0].data.data,
+            ppj: res[1].data.data,
+            ntp: res[2].data.data,
+          });
+          setLoading(false);
+          setError(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+          setError(true);
+        });
+    }
+  }, [dataHargaPpjNtp]);
 
   // fetch data from api
   useEffect(() => {
@@ -271,7 +323,7 @@ export default function Home() {
 
           {data && neracaSurplus && dataKomoditas && (
             <>
-              <SectionOne chart={data} surplus={neracaSurplus} />
+              <SectionOne chart={data} data={dataHargaPpjNtp} />
 
               <h2 style={{ paddingLeft: "0.8em" }}>Geo Tagging</h2>
               <SectionThree data={data} />

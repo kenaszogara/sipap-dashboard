@@ -7,9 +7,6 @@ import NeracaDownIcon from "@material-ui/icons/ExpandMore";
 import Box from "@material-ui/core/Box";
 import { DateTime } from "luxon";
 import Grid from "@material-ui/core/Grid";
-import { harga } from "./../../json/harga";
-import { ntp } from "./../../json/ntp";
-import { ppj } from "./../../json/ppj";
 
 // format number
 const numberWithCommas = (x) => {
@@ -32,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SectionOne({ chart }) {
+export default function SectionOne({ chart, data }) {
   const classes = useStyles();
 
   const [topBongkarVolumeData, setTopBongkarVolumeData] = useState(null);
@@ -46,8 +43,8 @@ export default function SectionOne({ chart }) {
   useEffect(() => {
     bongkar(chart);
     muat(chart);
-    parseNTP(ntp);
-    parseHarga(harga);
+    parseNTP(data.ntp);
+    parseHarga(data.harga);
   }, [chart]);
 
   useEffect(() => {
@@ -216,8 +213,8 @@ export default function SectionOne({ chart }) {
           <h3 style={{ paddingLeft: "0.6em", marginTop: "0.3em" }}>
             Pertumbuhan sektor perdagangan Jawa Tengah (%)
           </h3>
-          {ppj &&
-            ppj.map((item, index) => (
+          {data.ppj &&
+            data.ppj.map((item, index) => (
               <Grid item key={index}>
                 <Box
                   borderRadius={4}
