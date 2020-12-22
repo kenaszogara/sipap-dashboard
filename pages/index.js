@@ -124,7 +124,7 @@ export default function Home() {
     if (dataHargaPpjNtp == null) {
       setLoading(true);
       const host = publicRuntimeConfig.API_URL || "http://localhost:5000/";
-      const harga = axios.get(`${host}api/v1/bapok`);
+      const harga = axios.get(`${host}api/v1/harga`);
       const ppj = axios.get(`${host}api/v1/ppj`);
       const ntp = axios.get(`${host}api/v1/ntp`);
 
