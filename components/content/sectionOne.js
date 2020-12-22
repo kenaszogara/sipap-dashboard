@@ -214,7 +214,7 @@ export default function SectionOne({ chart }) {
             Data Provinsi
           </h2>
           <h3 style={{ paddingLeft: "0.6em", marginTop: "0.3em" }}>
-            Pertumbuhan Perdagangan Provinsi Jawa Tengah (%)
+            Pertumbuhan sektor perdagangan Jawa Tengah (%)
           </h3>
           {ppj &&
             ppj.map((item, index) => (
@@ -234,7 +234,6 @@ export default function SectionOne({ chart }) {
                 </Box>
               </Grid>
             ))}
-          <h4>Pertumbuhan sektor perdagangan Jawa Tengah (%)</h4>
         </Grid>
       </Grid>
       <Grid item xs={12} md={8} lg={9}>

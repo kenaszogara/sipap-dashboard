@@ -180,7 +180,7 @@ export default function Home() {
 
   return (
     <div>
-      <AppBar position="static" color="secondary">
+      <AppBar position="static" style={{ backgroundColor: "#DC3545" }}>
         <Toolbar>
           <Typography variant="h5">SIPAP</Typography>
           <Button
@@ -224,6 +224,14 @@ export default function Home() {
             Early Warning System
           </Button>
           <Button
+            style={{ marginLeft: "1em", color: "#f5f5f5" }}
+            onClick={() =>
+              (window.location.href = "https://ews.kemendag.go.id/")
+            }
+          >
+            SP2KP
+          </Button>
+          <Button
             variant="contained"
             color="primary"
             style={{ marginLeft: "auto" }}
@@ -265,6 +273,9 @@ export default function Home() {
             <>
               <SectionOne chart={data} surplus={neracaSurplus} />
 
+              <h2 style={{ paddingLeft: "0.8em" }}>Geo Tagging</h2>
+              <SectionThree data={data} />
+
               <h2 style={{ paddingLeft: "0.8em" }}>Neraca Komoditas</h2>
               <SectionTwo dataBapok={dataKomoditas} />
 
@@ -274,9 +285,6 @@ export default function Home() {
               {/* Pelindo III Data Table */}
               <h2 style={{ paddingLeft: "0.8em" }}>Data Export / Import</h2>
               <Table data={data} />
-
-              <h2 style={{ paddingLeft: "0.8em" }}>Geo Tagging</h2>
-              <SectionThree data={data} />
 
               <Grid item xs={12} id="bigData">
                 <h2>Data Produksi</h2>
