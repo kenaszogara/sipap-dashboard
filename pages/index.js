@@ -284,6 +284,12 @@ export default function Home() {
             SP2KP
           </Button>
           <Button
+            style={{ marginLeft: "1em", color: "#f5f5f5" }}
+            onClick={() => (window.location.href = "https://hargajateng.org/")}
+          >
+            SiHati
+          </Button>
+          <Button
             variant="contained"
             color="primary"
             style={{ marginLeft: "auto" }}
