@@ -26,13 +26,13 @@ const useStyles = makeStyles((theme) => ({
 export default function Home(props) {
   const classes = useStyles();
   const { data, loading, success, error, errMsg } = props;
-  const [instansi, setInstansi] = useState(data)
+  const [pergerakanKomoditas, setPergerakanKomoditas] = useState(data)
   const router = useRouter();
   const { publicRuntimeConfig } = getConfig();  
 
   // useEffect(() => {    
-  //   setInstansi(data)    
-  // }, [instansi]);
+  //   setPergerakanKomoditas(data)    
+  // }, [pergerakanKomoditas]);
   
   // const onDelete = data => {
   //   props.onDelete(data)
@@ -42,9 +42,9 @@ export default function Home(props) {
    <main className={classes.content}>   
     <Container maxWidth="lg" className={classes.container}>   
       <Grid container item direction="row" xs={12} md={12} lg={12}>            
-        <Grid item xs={12} md={12} lg={12} justify = "center"> 
+        <Grid item xs={12} md={12} lg={12}> 
             {error ?<Alert variant="filled" severity="error"> { errMsg } ! </Alert> : ''}
-            {success ?<Alert variant="filled" severity="success"> Berhasil menghapus Instansi ! </Alert> : ''}
+            {success ?<Alert variant="filled" severity="success"> Berhasil menghapus pergerakanKomoditas ! </Alert> : ''}
             <Box display="flex" justifyContent="center">
                 {loading ?<CircularProgress color="secondary" /> : ''}
             </Box>
@@ -52,18 +52,18 @@ export default function Home(props) {
       </Grid>           
       <Grid container item direction="row" xs={12} md={12} lg={12}>
         <Grid item xs={12} md={12} lg={12}>
-          {instansi && (
+          {pergerakanKomoditas && (
             <MaterialTable 
                 width={1}
                 editable={{                 
                   onRowDelete: async oldData => {            
                     const host = publicRuntimeConfig.API_URL || "http://localhost:5000/";      
-                    const delData = await axios.post(`${host}api/v1/instansi/del/${oldData.id}`)
+                    const delData = await axios.post(`${host}api/v1/pergerakanKomoditas/del/${oldData.id}`)
                       if(delData.status == 200){
-                        const dataDelete = [...instansi];
+                        const dataDelete = [...pergerakanKomoditas];
                         const index = oldData.tableData.id;
                         dataDelete.splice(index, 1);
-                        setInstansi(dataDelete);                        			
+                        setPergerakanKomoditas(dataDelete);                        			
                       }        
                   }
                 }}
@@ -71,7 +71,7 @@ export default function Home(props) {
                   {
                     icon: () => <AddIcon style={{ color: "#2979ff" }}/>,
                     tooltip: 'Tambah',
-                    onClick: () => router.push('/manage/instansi/add'),
+                    onClick: () => router.push('/manage/pergerakanKomoditas/add'),
                     isFreeAction: true
                   },
                   {
@@ -79,20 +79,40 @@ export default function Home(props) {
                     tooltip: 'Ubah',
                     iconProps: { style: { color: "#ffc400" } },
                     onClick: (event, rowData) => router.push({
-                      pathname: '/manage/instansi/edit',
+                      pathname: '/manage/pergerakanKomoditas/edit',
                       query: { id : rowData.id },
                     })
-                  },          
+                  }          
                 ]}
                 options={{
                   actionsColumnIndex: -1
                 }}
                 columns={[
                   { title: "No", render: rowData => rowData.tableData.id + 1 },
-                  { title : "Nama Instansi", field: "nama" },
+                  { field : "tgl_input", title: "Tgl Input" },
+                  { field : "tgl_transaksi", title: "Tgl Transaksi" },
+                  { title : "Komoditas", 
+                    field: "komoditas",
+                    render: rowData =>  <span> {rowData.komoditas.nama } </span>,
+                  },
+                  { title : "Volumne", field: "volume" },
+                  { title : "Satuan", 
+                    field: "satuan", 
+                    render: rowData =>  <span> {rowData.satuan.nama } </span>,
+                  },
+                  { title : "Harga", field: "harga" },
+                  { title : "Provinsi", 
+                    field : "provinsi",
+                    render: rowData =>  <span> {rowData.provinsi.nama } </span>,
+                  },                  
+                  { title : "Instansi", 
+                    field : "instansi",
+                    render: rowData =>  <span> {rowData.instansi.nama } </span>,
+                  },                  
+                  { title : "Jenis", field: "jenis" }
                 ]}
-                data={instansi}
-                title="Data Instansi"
+                data={pergerakanKomoditas}
+                title="Data Pergerakan Komoditas"
             />
           )}
         </Grid>

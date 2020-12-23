@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Dashboard from './../../../components/manage/dashboard/Dashboard';
-import Home from './../../../components/manage/instansi/index'
+import Home from './../../../components/manage/pergerakanKomoditas/index'
 import getConfig from "next/config";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { getUser } from '../../../utils/Common';
-
 const { publicRuntimeConfig } = getConfig();
 
-export default function IndexInstansi({ data }) {
+export default function IndexPergerakanKomoditas({ data }) {
 	const [success, setSuccess] = useState(false);
-	const [instansi, setInstansi] = useState(data);
+	const [pergerakanKomoditas, setPergerakanKomoditas] = useState(data);
 	const [error, setError] = useState(false);
 	const [errMsg, setErrMsg] = useState(null);
 	const [loading, setLoading] = useState(false);
@@ -29,7 +28,7 @@ export default function IndexInstansi({ data }) {
   	return ( 
 		<>	
 			{pageReady && (
-				<Dashboard content={ <Home data={instansi} 
+				<Dashboard content={ <Home data={pergerakanKomoditas} 
 						loading={loading} 
 						success={success} 
 						error={error} 
@@ -40,11 +39,10 @@ export default function IndexInstansi({ data }) {
 	);
 }
 
-export async function getServerSideProps() {
-	let data = null
+export async function getServerSideProps() {	
   	const host = publicRuntimeConfig.API_URL || "http://localhost:5000/";  	
-  	const getData = await axios.get(`${host}api/v1/instansi`)      	
-	data = getData.data.data  
+  	const getData = await axios.get(`${host}api/v1/pergerakanKomoditas`)      	
+	let data = getData.data.data  
     return { 
       	props: { 
       		data 

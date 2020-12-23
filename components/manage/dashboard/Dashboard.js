@@ -3,23 +3,21 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
-import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import MainListItems from './listItems';
-import Orders from './Orders';
+import { useRouter } from 'next/router';
+import { route } from 'next/dist/next-server/server/router';
+import { getUser, removeUserSession } from '../../../utils/Common';
+import { Button } from '@material-ui/core';
 
 function Copyright() {
   return (
@@ -118,11 +116,21 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard(props) {
   const {content} = props;
+  const link = useRouter();
+  const user = getUser();
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
+  
+  const logout = () => {
+    if(confirm("Yakin Untuk Logout")){
+      removeUserSession();
+      link.push('/manage/auth');
+    }
+  }
+
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
@@ -151,6 +159,11 @@ export default function Dashboard(props) {
           >
             Manage 
           </Typography>
+          <small>  
+            <Button color="inherit" onClick={logout}>
+              Logout            
+            </Button>
+          </small>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -160,13 +173,15 @@ export default function Dashboard(props) {
         }}
         open={open}
       >
-        <div className={classes.toolbarIcon}>
+        <div className={classes.toolbarIcon}>          
           <IconButton onClick={toggleDrawer}>
             <ChevronLeftIcon />
           </IconButton>
         </div>
         <Divider />
-        <List><MainListItems /></List>
+        <List>
+          <MainListItems />        
+        </List>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />

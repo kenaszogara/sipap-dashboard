@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from "material-table";
 import AddIcon from '@material-ui/icons/Add';
 import { useRouter } from "next/router";
-import axios from "axios";
 import getConfig from "next/config";
 import Alert from '@material-ui/lab/Alert';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -26,25 +25,25 @@ const useStyles = makeStyles((theme) => ({
 export default function Home(props) {
   const classes = useStyles();
   const { data, loading, success, error, errMsg } = props;
-  const [instansi, setInstansi] = useState(data)
+  const [provinsi, setProvinsi] = useState(data)
   const router = useRouter();
   const { publicRuntimeConfig } = getConfig();  
 
   // useEffect(() => {    
-  //   setInstansi(data)    
-  // }, [instansi]);
+  //   setProvinsi(data)    
+  // }, [provinsi]);
   
-  // const onDelete = data => {
-  //   props.onDelete(data)
-  // };
+  const onDelete = data => {
+    props.onDelete(data)
+  };
 
   return ( 
    <main className={classes.content}>   
     <Container maxWidth="lg" className={classes.container}>   
       <Grid container item direction="row" xs={12} md={12} lg={12}>            
-        <Grid item xs={12} md={12} lg={12} justify = "center"> 
+        <Grid item xs={12} md={12} lg={12}> 
             {error ?<Alert variant="filled" severity="error"> { errMsg } ! </Alert> : ''}
-            {success ?<Alert variant="filled" severity="success"> Berhasil menghapus Instansi ! </Alert> : ''}
+            {success ?<Alert variant="filled" severity="success"> Berhasil menghapus provinsi ! </Alert> : ''}
             <Box display="flex" justifyContent="center">
                 {loading ?<CircularProgress color="secondary" /> : ''}
             </Box>
@@ -52,26 +51,25 @@ export default function Home(props) {
       </Grid>           
       <Grid container item direction="row" xs={12} md={12} lg={12}>
         <Grid item xs={12} md={12} lg={12}>
-          {instansi && (
+          {provinsi && (
             <MaterialTable 
                 width={1}
-                editable={{                 
-                  onRowDelete: async oldData => {            
-                    const host = publicRuntimeConfig.API_URL || "http://localhost:5000/";      
-                    const delData = await axios.post(`${host}api/v1/instansi/del/${oldData.id}`)
-                      if(delData.status == 200){
-                        const dataDelete = [...instansi];
-                        const index = oldData.tableData.id;
-                        dataDelete.splice(index, 1);
-                        setInstansi(dataDelete);                        			
-                      }        
-                  }
+                editable={{
+                  onRowDelete: async oldData => {                    
+                    onDelete(oldData)
+                    setTimeout(()=>{
+                      const dataDelete = [...provinsi];
+                      const index = oldData.tableData.id;
+                      dataDelete.splice(index, 1);
+                      setProvinsi([...dataDelete]);
+                    }, 800)
+                  }            
                 }}
                 actions={[
                   {
                     icon: () => <AddIcon style={{ color: "#2979ff" }}/>,
                     tooltip: 'Tambah',
-                    onClick: () => router.push('/manage/instansi/add'),
+                    onClick: () => router.push('/manage/provinsi/add'),
                     isFreeAction: true
                   },
                   {
@@ -79,20 +77,20 @@ export default function Home(props) {
                     tooltip: 'Ubah',
                     iconProps: { style: { color: "#ffc400" } },
                     onClick: (event, rowData) => router.push({
-                      pathname: '/manage/instansi/edit',
+                      pathname: '/manage/provinsi/edit',
                       query: { id : rowData.id },
                     })
-                  },          
+                  }            
                 ]}
                 options={{
                   actionsColumnIndex: -1
                 }}
                 columns={[
                   { title: "No", render: rowData => rowData.tableData.id + 1 },
-                  { title : "Nama Instansi", field: "nama" },
+                  { title : "Nama provinsi", field: "nama" },
                 ]}
-                data={instansi}
-                title="Data Instansi"
+                data={provinsi}
+                title="Data provinsi"
             />
           )}
         </Grid>
