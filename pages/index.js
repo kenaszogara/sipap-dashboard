@@ -327,7 +327,7 @@ export default function Home() {
             />
           </Grid>
 
-          {data && neracaSurplus && dataKomoditas && (
+          {data && dataKomoditas && (
             <>
               <SectionOne chart={data} data={dataHargaPpjNtp} />
 

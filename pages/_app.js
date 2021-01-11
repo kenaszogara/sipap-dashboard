@@ -30,11 +30,6 @@ function MyApp(props) {
           crossorigin="anonymous"
         />
         <script
-          src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/8.2.2/highcharts.js"
-          integrity="sha512-PpL09bLaSaj5IzGNx6hsnjiIeLm9bL7Q9BB4pkhEvQSbmI0og5Sr/s7Ns/Ax4/jDrggGLdHfa9IbsvpnmoZYFA=="
-          crossorigin="anonymous"
-        ></script>
-        <script
           src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/8.2.2/highmaps.min.js"
           integrity="sha512-cHvujTbKVhurlO7/LNotR0zDEhYkbRiNhkg31AV5Mny7N+hLM95pn28zD39YWR6d0Kj3j+B6B+fGd+LY7DYLyg=="
           crossorigin="anonymous"
