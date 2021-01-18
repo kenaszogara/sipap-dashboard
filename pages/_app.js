@@ -1,6 +1,8 @@
 import Head from "next/head";
 import React from "react";
 import PropTypes from "prop-types";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import LuxonUtils from "@date-io/luxon";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "../styles/theme";
@@ -37,7 +39,9 @@ function MyApp(props) {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Component {...pageProps} />
+        <MuiPickersUtilsProvider utils={LuxonUtils}>
+          <Component {...pageProps} />
+        </MuiPickersUtilsProvider>
       </ThemeProvider>
     </React.Fragment>
   );

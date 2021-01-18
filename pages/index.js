@@ -11,6 +11,8 @@ import Grid from "@material-ui/core/Grid";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Button from "@material-ui/core/Button";
 import MaterialTable from "material-table";
+import { DateTime } from "luxon";
+import { DatePicker } from "@material-ui/pickers";
 
 import SectionOne from "./../components/content/sectionOne";
 import SectionTwo from "./../components/content/sectionTwo";
@@ -47,6 +49,42 @@ export default function Home() {
   const [neracaSurplus, setSurplus] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [globalYear, handleGlobalYear] = useState(DateTime.local());
+
+  // fetch data pelindo
+  const fetchData = (year) => {
+    const nextYear = year + 1;
+    setLoading(true);
+    const host = publicRuntimeConfig.API_URL || "http://localhost:5000/";
+    axios
+      .get(`${host}api/v1/pelindo/auth/PP3_USR1`)
+      .then((res) => {
+        const token = res.data.JWT;
+        // console.log(token);
+        axios
+          .get(`${host}api/v1/pelindo/${year}/${nextYear}`, {
+            headers: {
+              Authorization: token,
+            },
+          })
+          .then((res) => {
+            // console.log(res.data);
+            setData(res.data);
+            setLoading(false);
+            setError(false);
+          })
+          .catch((err) => {
+            console.log(err);
+            setLoading(false);
+            setError(true);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+        setError(true);
+      });
+  };
 
   useEffect(() => {
     if (neracaSurplus == null && dataKomoditas != null) {
@@ -65,38 +103,13 @@ export default function Home() {
 
   useEffect(() => {
     if (data == null) {
-      setLoading(true);
-      const host = publicRuntimeConfig.API_URL || "http://localhost:5000/";
-      axios
-        .get(`${host}api/v1/pelindo/auth/PP3_USR1`)
-        .then((res) => {
-          const token = res.data.JWT;
-          // console.log(token);
-          axios
-            .get(`${host}api/v1/pelindo/2020/2021`, {
-              headers: {
-                Authorization: token,
-              },
-            })
-            .then((res) => {
-              // console.log(res.data);
-              setData(res.data);
-              setLoading(false);
-              setError(false);
-            })
-            .catch((err) => {
-              console.log(err);
-              setLoading(false);
-              setError(true);
-            });
-        })
-        .catch((err) => {
-          console.log(err);
-          setLoading(false);
-          setError(true);
-        });
+      fetchData(globalYear.year);
     }
   }, [data]);
+
+  useEffect(() => {
+    fetchData(globalYear.year);
+  }, [globalYear]);
 
   // fetch data from api
   useEffect(() => {
@@ -329,7 +342,12 @@ export default function Home() {
 
           {data && dataKomoditas && (
             <>
-              <SectionOne chart={data} data={dataHargaPpjNtp} />
+              <SectionOne
+                chart={data}
+                data={dataHargaPpjNtp}
+                year={globalYear}
+                handleYear={handleGlobalYear}
+              />
 
               <h2 style={{ paddingLeft: "0.8em" }}>Geo Tagging</h2>
               <SectionThree data={data} />

@@ -7,7 +7,7 @@ const numberWithCommas = (x) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 };
 
-export default function LineGraph(props) {
+export default function LineGraphPerdangan(props) {
   const { id, data, labels, tooltipsCallback } = props;
   const chartRef = useRef(null);
 

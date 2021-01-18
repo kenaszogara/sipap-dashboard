@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import LineGraph from "./../linegraph";
+import LineGraphPerdangan from "./../linegraphPerdagangan";
 import BarGraph from "./../bargraph";
 import { makeStyles } from "@material-ui/core/styles";
 import NeracaUpIcon from "@material-ui/icons/ExpandLess";
@@ -7,6 +8,22 @@ import NeracaDownIcon from "@material-ui/icons/ExpandMore";
 import Box from "@material-ui/core/Box";
 import { DateTime } from "luxon";
 import Grid from "@material-ui/core/Grid";
+import { DatePicker } from "@material-ui/pickers";
+
+const monthLabels = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 // format number
 const numberWithCommas = (x) => {
@@ -29,8 +46,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SectionOne({ chart, data }) {
+export default function SectionOne({ chart, data, year, handleYear }) {
   const classes = useStyles();
+
+  const currMonth = DateTime.local();
+  const lastMonth = DateTime.local().minus({ months: 1 });
 
   const [topBongkarVolumeData, setTopBongkarVolumeData] = useState(null);
   const [topMuatVolumeData, setTopMuatVolumeData] = useState(null);
@@ -38,14 +58,25 @@ export default function SectionOne({ chart, data }) {
   const [indexTerima, setIndexTerima] = useState([]);
   const [indexBayar, setIndexBayar] = useState([]);
   const [indexNTP, setIndexNTP] = useState([]);
-  const [dataHarga, setDataHarga] = useState({});
+  const [dataHarga, setDataHarga] = useState(null);
+  const [lastMonthDate, handleLastMonthDate] = useState(lastMonth);
+  const [currMonthDate, handleCurrMonthDate] = useState(currMonth);
+  const [ntpDate, handleNTPDate] = useState(currMonth);
 
   useEffect(() => {
     bongkar(chart);
     muat(chart);
-    parseNTP(data.ntp);
-    parseHarga(data.harga);
   }, [chart]);
+
+  useEffect(() => {
+    parseNTP(data.ntp);
+  }, [data, ntpDate]);
+
+  useEffect(() => {
+    setDataHarga(null);
+    parseHarga(data.harga);
+    console.log(lastMonthDate);
+  }, [data, lastMonthDate, currMonthDate]);
 
   useEffect(() => {
     const month = 11;
@@ -115,16 +146,17 @@ export default function SectionOne({ chart, data }) {
   };
 
   const parseNTP = (ntp) => {
+    const year = ntpDate.year;
     const indexTerima = ntp.map((item) => {
-      return item.indexTerima;
+      if (item.tahun == year) return item.indexTerima;
     });
 
     const indexBayar = ntp.map((item) => {
-      return item.indexBayar;
+      if (item.tahun == year) return item.indexBayar;
     });
 
     const indexNTP = ntp.map((item) => {
-      return item.ntp;
+      if (item.tahun == year) return item.ntp;
     });
 
     setIndexTerima(indexTerima);
@@ -135,24 +167,34 @@ export default function SectionOne({ chart, data }) {
   const parseHarga = (data) => {
     // parse labels by comodities
     const labels = [];
-    const dataOktober = [];
-    const dataNopember = [];
+    const dataLastMonth = [];
+    const dataCurrMonth = [];
+
+    // console.log(lastMonthDate.month, currMonthDate.month);
 
     // parse by month oktober
     const parse = data.map((item) => {
-      if (item.bulan == 10) {
+      if (
+        item.bulan == lastMonthDate.month &&
+        item.tahun == lastMonthDate.year
+      ) {
+        dataLastMonth.push(item.harga);
+      } else if (
+        item.bulan == currMonthDate.month &&
+        item.tahun == currMonthDate.year
+      ) {
         labels.push(`${item.komoditas} (${item.satuan})`);
-        dataOktober.push(item.harga);
-      } else {
-        dataNopember.push(item.harga);
+        dataCurrMonth.push(item.harga);
       }
     });
+
+    // console.log(dataLastMonth, dataCurrMonth);
 
     // set state
     setDataHarga({
       labels,
-      dataOktober,
-      dataNopember,
+      dataLastMonth,
+      dataCurrMonth,
     });
   };
 
@@ -235,8 +277,19 @@ export default function SectionOne({ chart, data }) {
       </Grid>
       <Grid item xs={12} md={8} lg={9}>
         <h2>Data Perdagangan Keluar dan Masuk (ton)</h2>
-        <Box borderRadius={4} boxShadow={3}>
-          <LineGraph
+        <Box borderRadius={4} boxShadow={3} style={{ padding: "20px" }}>
+          <DatePicker
+            variant="inline"
+            openTo="year"
+            views={["year"]}
+            label="Tahun"
+            value={year}
+            onChange={handleYear}
+            style={{ marginRight: "1em" }}
+          />
+          <LineGraphPerdangan
+            id="chartPerdagangan"
+            labels={monthLabels}
             data={[
               {
                 label: "Keluar",
@@ -255,6 +308,14 @@ export default function SectionOne({ chart, data }) {
                 lineTension: "0",
               },
             ]}
+            tooltipsCallback={{
+              label: function (tooltipItem, data) {
+                let label = tooltipItem.datasetIndex == 0 ? "Keluar" : "Masuk";
+                let value = `${numberWithCommas(tooltipItem.value)} ton` || "";
+
+                return `${label}: ${value}`;
+              },
+            }}
           />
         </Box>
       </Grid>
@@ -268,7 +329,19 @@ export default function SectionOne({ chart, data }) {
             boxShadow={3}
             style={{ padding: "20px" }}
           >
+            <DatePicker
+              variant="inline"
+              openTo="year"
+              views={["year"]}
+              label="Tahun"
+              value={ntpDate}
+              onChange={handleNTPDate}
+              style={{ marginRight: "1em" }}
+            />
+
             <LineGraph
+              id="chartNTP"
+              labels={monthLabels}
               data={[
                 {
                   label: "Index Diterima Petani (It)",
@@ -295,6 +368,24 @@ export default function SectionOne({ chart, data }) {
                   lineTension: "0",
                 },
               ]}
+              tooltipsCallback={{
+                label: function (tooltipItem, data) {
+                  let i = tooltipItem.datasetIndex;
+                  let label = "";
+                  if (i == 0) {
+                    label = "It";
+                  } else if (i == 1) {
+                    label = "Ib";
+                  } else {
+                    label = "NTP";
+                  }
+
+                  let value =
+                    `${numberWithCommas(tooltipItem.value)} ton` || "";
+
+                  return `${label}: ${value}`;
+                },
+              }}
             />
           </Box>
         </Grid>
@@ -306,21 +397,42 @@ export default function SectionOne({ chart, data }) {
             boxShadow={3}
             style={{ padding: "20px" }}
           >
-            <BarGraph
-              labels={dataHarga.labels}
-              datasets={[
-                {
-                  label: "12/10/2020",
-                  backgroundColor: "#FE7979",
-                  data: dataHarga.dataOktober,
-                },
-                {
-                  label: "12/11/2020",
-                  backgroundColor: "#009688",
-                  data: dataHarga.dataNopember,
-                },
-              ]}
+            <DatePicker
+              variant="inline"
+              openTo="year"
+              views={["year", "month"]}
+              label="Bulan Perbandingan"
+              value={lastMonthDate}
+              onChange={handleLastMonthDate}
+              style={{ marginRight: "1em" }}
             />
+
+            <DatePicker
+              variant="inline"
+              openTo="year"
+              views={["year", "month"]}
+              label="Bulan Sekarang"
+              value={currMonthDate}
+              onChange={handleCurrMonthDate}
+            />
+
+            {dataHarga != null && (
+              <BarGraph
+                labels={dataHarga.labels}
+                datasets={[
+                  {
+                    label: "Bulan Perbandingan",
+                    backgroundColor: "#FE7979",
+                    data: dataHarga.dataLastMonth,
+                  },
+                  {
+                    label: "Bulan Sekarang",
+                    backgroundColor: "#009688",
+                    data: dataHarga.dataCurrMonth,
+                  },
+                ]}
+              />
+            )}
           </Box>
         </Grid>
       </Grid>

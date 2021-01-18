@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import Chart from "chart.js";
+let chart;
 
 export default function BarGraph(props) {
   const { labels, datasets, options } = props;
@@ -7,7 +8,9 @@ export default function BarGraph(props) {
 
   useEffect(() => {
     if (chartRef && chartRef.current) {
-      new Chart(chartRef.current.getContext("2d"), {
+      if (typeof chart !== "undefined") chart.destroy();
+
+      chart = new Chart(chartRef.current.getContext("2d"), {
         type: "bar",
         data: {
           labels: labels,
