@@ -356,7 +356,7 @@ export default function Home() {
               <SectionTwo dataBapok={dataKomoditas} />
 
               <h2 style={{ paddingLeft: "0.8em" }}>Data Konsumsi</h2>
-              <SectionFour dataBapok={dataKomoditas} />
+              <SectionFour dataBapok={dataKomoditas} year={globalYear.year} dataPelindo={data} />
 
               {/* Pelindo III Data Table */}
               <h2 style={{ paddingLeft: "0.8em" }}>Data Export / Import</h2>

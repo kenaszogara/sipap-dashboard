@@ -145,19 +145,29 @@ export default function SectionOne({ chart, data, year, handleYear }) {
     setTopMuatVolumeData(muat);
   };
 
-  const parseNTP = (ntp) => {
+ const parseNTP = (ntp) => {
     const year = ntpDate.year;
-    const indexTerima = ntp.map((item) => {
-      if (item.tahun == year) return item.indexTerima;
+    const indexTerima = [];
+    const indexBayar = [];
+    const indexNTP = [];    
+    const newNtp = [];
+    ntp.map((item) => {
+      if (item.tahun == year) newNtp.push(item);
     });
-
-    const indexBayar = ntp.map((item) => {
-      if (item.tahun == year) return item.indexBayar;
-    });
-
-    const indexNTP = ntp.map((item) => {
-      if (item.tahun == year) return item.ntp;
-    });
+    console.log(newNtp)   
+    monthLabels.forEach((month)=>{      
+      console.log(month)
+      const data = newNtp.find(item => item.bulan === month)
+      if(data == undefined){
+        indexTerima.push("");
+        indexBayar.push("");
+        indexNTP.push("");
+      }else{
+        indexTerima.push(data.indexTerima);
+        indexBayar.push(data.indexBayar);
+        indexNTP.push(data.ntp);
+      }
+    })    
 
     setIndexTerima(indexTerima);
     setIndexBayar(indexBayar);
