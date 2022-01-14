@@ -78,13 +78,13 @@ export default function Home() {
               setError(false);
             })
             .catch((err) => {
-              console.log(err);
+              // console.log(err);
               setLoading(false);
               setError(true);
             });
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           setLoading(false);
           setError(true);
         });

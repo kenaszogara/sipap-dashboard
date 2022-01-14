@@ -13,6 +13,7 @@ import Button from "@material-ui/core/Button";
 import MaterialTable from "material-table";
 import { DateTime } from "luxon";
 import { DatePicker } from "@material-ui/pickers";
+import Modal from 'react-modal';
 
 import SectionOne from "./../components/content/sectionOne";
 import SectionTwo from "./../components/content/sectionTwo";
@@ -49,6 +50,7 @@ export default function Home() {
   const [neracaSurplus, setSurplus] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [openModal, asd] = useState(false);
   const [globalYear, handleGlobalYear] = useState(DateTime.local());
 
   // fetch data pelindo
@@ -74,13 +76,13 @@ export default function Home() {
             setError(false);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             setLoading(false);
             setError(true);
           });
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setLoading(false);
         setError(true);
       });
@@ -119,13 +121,13 @@ export default function Home() {
       axios
         .get(`${host}api/v1/bapok`)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           setDataKomoditas(res.data.data);
           setLoading(false);
           setError(false);
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           setLoading(false);
           setError(true);
         });
@@ -144,7 +146,7 @@ export default function Home() {
       axios
         .all([harga, ppj, ntp])
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           setDataHargaPpjNtp({
             harga: res[0].data.data,
             ppj: res[1].data.data,
@@ -154,7 +156,7 @@ export default function Home() {
           setError(false);
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           setLoading(false);
           setError(true);
         });
@@ -169,13 +171,13 @@ export default function Home() {
       axios
         .get(`${host}api/v1/jembatanTimbang`)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           setDataJembatan(res.data.data);
           setLoading(false);
           setError(false);
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           setLoading(false);
           setError(true);
         });
@@ -196,7 +198,7 @@ export default function Home() {
           setError(false);
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           setLoading(false);
           setError(true);
         });
@@ -216,7 +218,7 @@ export default function Home() {
           setError(false);
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           setLoading(false);
           setError(true);
         });
@@ -236,12 +238,57 @@ export default function Home() {
           setError(false);
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           setLoading(false);
           setError(true);
         });
     }
   }, [dataTdpud]);
+
+  // const handleOpen = () => {
+  //   asd(true);
+  // };
+
+  // const handleClose = () => {
+  //   asd(false);
+  // };
+
+  const openData = (data) => {
+    // let monthIndex = monthLabels.findIndex((row) => {
+    //   return row = month;
+    // })
+    // month = monthIndex + 1;
+    // let data = []
+    // let dataChart = [...data]
+    // dataChart.forEach((item, index) => {
+    //   if(dataset == 'Keluar'){
+    //     if (item.JENIS === "MUAT") {
+    //       const date = DateTime.fromISO(item.TGL_TRANSAKSI).month;
+    //       if (date === month) {
+    //         item.SATUAN === "TON"
+    //           ? parseInt(item.VOLUME) * 1000
+    //           : parseInt(item.VOLUME);
+
+    //           data.push(item)
+    //       }
+    //     }
+    //   }
+    //   if(dataset == 'Masuk'){
+    //     if (item.JENIS === "BONGKAR") {
+    //       const date = DateTime.fromISO(item.TGL_TRANSAKSI).month;
+    //       if (date === month) {
+    //         item.SATUAN === "TON"
+    //           ? parseInt(item.VOLUME) * 1000
+    //           : parseInt(item.VOLUME);
+
+    //         data.push(item)
+    //       }
+    //     }
+    //   }
+    // });
+    // handleOpen()
+    console.log(data)
+  }
 
   return (
     <div>
@@ -307,7 +354,7 @@ export default function Home() {
             color="primary"
             style={{ marginLeft: "auto" }}
             onClick={() =>
-              (window.location.href = "http://18.140.74.118/sipap/login")
+              (window.location.href = "http://18.140.74.118/sipap2021/login")
             }
           >
             Integrasi Aplikasi
@@ -346,6 +393,7 @@ export default function Home() {
                 chart={data}
                 data={dataHargaPpjNtp}
                 year={globalYear}
+                openDataTab={openData}
                 handleYear={handleGlobalYear}
               />
 
@@ -481,6 +529,21 @@ export default function Home() {
           )}
         </Grid>
       </div>
+      {/* <div style={{ 
+          display: openModal ? 'block' : 'none', 
+          background: "#00000073",
+          width: '100%',
+          height: '100vh',
+          position: 'fixed',
+          zIndex: '2',
+          top: "0",
+          left: '0',
+          overflow: 'hidden',
+        }}>
+          <div>
+            hello
+          </div>           
+      </div> */}
     </div>
   );
 }

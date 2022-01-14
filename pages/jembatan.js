@@ -81,13 +81,13 @@ export default function Jembatan() {
       axios
         .get(`${host}api/v1/jembatanTimbang`)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           setData(res.data.data);
           setLoading(false);
           setError(false);
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           setLoading(false);
           setError(true);
         });

@@ -105,13 +105,13 @@ export default function Pelindo() {
               setError(false);
             })
             .catch((err) => {
-              console.log(err);
+              // console.log(err);
               setLoading(false);
               setError(true);
             });
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           setLoading(false);
           setError(true);
         });

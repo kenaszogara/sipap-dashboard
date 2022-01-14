@@ -49,7 +49,7 @@ export default function Jembatan() {
           setError(false);
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           setLoading(false);
           setError(true);
         });

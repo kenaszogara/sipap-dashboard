@@ -58,6 +58,26 @@ export default function LineGraph(props) {
               tension: 0, // disables bezier curves
             },
           },
+          animation: {
+            duration: 100,
+            loop: false,
+            onComplete: function () {
+              var chartInstance = this.chart,
+              ctx = chartInstance.ctx;
+              ctx.textAlign = 'center';
+              ctx.fillStyle = "rgba(0, 0, 0, 1)";
+              ctx.textBaseline = 'bottom';
+              this.data.datasets.forEach(function (dataset, i) {
+                  var meta = chartInstance.controller.getDatasetMeta(i);
+                  meta.data.forEach(function (bar, index) {
+                      var data = new Intl.NumberFormat("id-ID").format(
+                        parseInt(dataset.data[index] ?? 0)
+                      );
+                      ctx.fillText(data == "NaN" ? "" : data, bar._model.x, bar._model.y - 5);
+                  });
+              });
+            }
+          },
         },
       });
     }
