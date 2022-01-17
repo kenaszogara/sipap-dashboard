@@ -1,97 +1,127 @@
-import React, { useEffect, useRef } from "react";
-import Chart from "chart.js";
-let chart;
+import React, { useRef } from "react";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+} from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+import { 
+  Line,
+  getDatasetAtEvent,
+  getElementAtEvent,
+  getElementsAtEvent,
+} from "react-chartjs-2";
 
-// format number
-const numberWithCommas = (x) => {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-};
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  ChartDataLabels
+);
 
 export default function LineGraphPerdangan(props) {
-  const { id, data, labels, tooltipsCallback, openData } = props;
+  const { id, data, labels, tooltipsCallback, openData, column } = props;
+
+  const dataChart = {
+    labels: labels,
+    datasets: data
+  };
+
+  const options = {
+    responsive: true,
+    plugins: {
+      datalabels: {
+        display: true,
+        color: "black",
+        align: "end",
+        anchor: "end",
+        font: { size: "14" },
+        formatter: function(value, context) {
+          var data = new Intl.NumberFormat("id-ID").format(
+            parseInt(value)
+          );
+          return data == "NaN" ? "" : data;
+        }
+      }
+    },
+    legend: {
+      display: false,
+      position: "top"
+    },
+    title: {
+      display: true,
+      text: ""
+    },
+    tooltips: {
+      mode: "index",
+      intersect: false,
+      callbacks: tooltipsCallback,
+    },
+    hover: {
+      mode: "nearest",
+      intersect: true
+    },
+    scales: {
+      xAxes: [
+        {
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: "Month"
+          }
+        }
+      ],
+      yAxes: [
+        {
+          display: true,
+          labelString: "TON"
+        }
+      ]
+    },
+    elements: {
+      line: {
+        tension: 0 // disables bezier curves
+      }
+    }
+  };
+
   const chartRef = useRef(null);
 
-  useEffect(() => {
-    if (chartRef && chartRef.current) {
-      if (typeof chart !== "undefined") chart.destroy();
+  const printDatasetAtEvent = (dataset) => {
+    if (!dataset.length) return;
 
-      chart = new Chart(chartRef.current.getContext("2d"), {
-        type: "line",
-        data: {
-          labels: labels,
-          datasets: data,
-        },
-        options: {
-          onClick: function(evt) {          
-            var activePoints = chart.getElementsAtEventForMode(evt, 'point', chart.options);
-            if(activePoints.length > 0){
-              var firstPoint = activePoints[0];
-              var lebelDataset = chart.data.datasets[firstPoint._datasetIndex].label;
-              var labelMonth = chart.data.labels[firstPoint._index];
-              var value = chart.data.datasets[firstPoint._datasetIndex].data[firstPoint._index];
-              openData(lebelDataset, labelMonth)
-            }
-          },
-          responsive: true,
-          title: {
-            display: true,
-            text: "",
-          },
-          tooltips: {
-            mode: "index",
-            intersect: false,
-            callbacks: tooltipsCallback,
-          },
-          hover: {
-            mode: "nearest",
-            intersect: true,
-          },
-          scales: {
-            xAxes: [
-              {
-                display: true,
-                scaleLabel: {
-                  display: true,
-                  labelString: "Month",
-                },
-              },
-            ],
-            yAxes: [
-              {
-                display: true,
-                labelString: "TON",
-              },
-            ],
-          },
-          elements: {
-            line: {
-              tension: 0, // disables bezier curves
-            },
-          },
-          animation: {
-            duration: 100,
-            loop: false,
-            onComplete: function () {
-              var chartInstance = this.chart,
-              ctx = chartInstance.ctx;
-              ctx.textAlign = 'center';
-              ctx.fillStyle = "rgba(0, 0, 0, 1)";
-              ctx.textBaseline = 'bottom';
-              this.data.datasets.forEach(function (dataset, i) {
-                  var meta = chartInstance.controller.getDatasetMeta(i);
-                  meta.data.forEach(function (bar, index) {
-                      var data = new Intl.NumberFormat("id-ID").format(
-                        parseInt(dataset.data[index])
-                      );
-                      ctx.fillText(data == "NaN" ? "" : data, bar._model.x, bar._model.y - 5);
-                  });
-              });
-            }
-          }
-        },
-      });
+    const datasetIndex = dataset[0].datasetIndex;
+
+    return dataChart.datasets[datasetIndex].label;
+  };
+
+  const printElementAtEvent = (element) => {
+    if (!element.length) return;
+
+    const { datasetIndex, index } = element[0];
+
+    return dataChart.labels[index];
+  };
+
+  const onClick = (event) => {
+    const { current: chart } = chartRef;
+
+    if (!chart) {
+      return;
     }
-  });
+    if (!getDatasetAtEvent(chart, event).length) return;
 
-  return <canvas id={id} ref={chartRef} />;
+    openData(printDatasetAtEvent(getDatasetAtEvent(chart, event)), printElementAtEvent(getElementAtEvent(chart, event)), column);
+  };
+
+  return <Line ref={chartRef} options={options} data={dataChart} onClick={onClick} />;
 }

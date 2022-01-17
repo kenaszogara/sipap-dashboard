@@ -36,6 +36,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const styleModal = { 
+  display: 'none', 
+  background: "#00000073",
+  width: '100%',
+  height: '100vh',
+  position: 'fixed',
+  zIndex: '2',
+  top: "0",
+  left: '0',
+  overflow: 'hidden',
+}
+
 export default function Home() {
   const classes = useStyles();
   const router = useRouter();
@@ -51,6 +63,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [openModal, asd] = useState(false);
+  const [dataModal, setDataModal] = useState(null);
   const [globalYear, handleGlobalYear] = useState(DateTime.local());
 
   // fetch data pelindo
@@ -146,7 +159,7 @@ export default function Home() {
       axios
         .all([harga, ppj, ntp])
         .then((res) => {
-          // console.log(res);
+          console.log(res[2].data.data);
           setDataHargaPpjNtp({
             harga: res[0].data.data,
             ppj: res[1].data.data,
@@ -253,43 +266,6 @@ export default function Home() {
   //   asd(false);
   // };
 
-  const openData = (data) => {
-    // let monthIndex = monthLabels.findIndex((row) => {
-    //   return row = month;
-    // })
-    // month = monthIndex + 1;
-    // let data = []
-    // let dataChart = [...data]
-    // dataChart.forEach((item, index) => {
-    //   if(dataset == 'Keluar'){
-    //     if (item.JENIS === "MUAT") {
-    //       const date = DateTime.fromISO(item.TGL_TRANSAKSI).month;
-    //       if (date === month) {
-    //         item.SATUAN === "TON"
-    //           ? parseInt(item.VOLUME) * 1000
-    //           : parseInt(item.VOLUME);
-
-    //           data.push(item)
-    //       }
-    //     }
-    //   }
-    //   if(dataset == 'Masuk'){
-    //     if (item.JENIS === "BONGKAR") {
-    //       const date = DateTime.fromISO(item.TGL_TRANSAKSI).month;
-    //       if (date === month) {
-    //         item.SATUAN === "TON"
-    //           ? parseInt(item.VOLUME) * 1000
-    //           : parseInt(item.VOLUME);
-
-    //         data.push(item)
-    //       }
-    //     }
-    //   }
-    // });
-    // handleOpen()
-    console.log(data)
-  }
-
   return (
     <div>
       <AppBar position="static" style={{ backgroundColor: "#DC3545" }}>
@@ -392,8 +368,8 @@ export default function Home() {
               <SectionOne
                 chart={data}
                 data={dataHargaPpjNtp}
+                loading={loading}
                 year={globalYear}
-                openDataTab={openData}
                 handleYear={handleGlobalYear}
               />
 
@@ -430,6 +406,7 @@ export default function Home() {
                       { title: "Nov", field: "november" },
                     ]}
                     data={dataPrognosa}
+                    title={''}
                     options={{
                       pageSize: 10,
                       pageSizeOptions: [10, 20, 30, 50, 100],
@@ -529,21 +506,6 @@ export default function Home() {
           )}
         </Grid>
       </div>
-      {/* <div style={{ 
-          display: openModal ? 'block' : 'none', 
-          background: "#00000073",
-          width: '100%',
-          height: '100vh',
-          position: 'fixed',
-          zIndex: '2',
-          top: "0",
-          left: '0',
-          overflow: 'hidden',
-        }}>
-          <div>
-            hello
-          </div>           
-      </div> */}
     </div>
   );
 }

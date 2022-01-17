@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 // material ui
 import {
   makeStyles,
-  createMuiTheme,
+  createTheme,
   ThemeProvider,
 } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -22,7 +22,7 @@ import Table from "../components/pelindo/table";
 const { publicRuntimeConfig } = getConfig();
 
 // material ui theme
-const theme = createMuiTheme({});
+const theme = createTheme({});
 
 // material ui css
 const useStyles = makeStyles((theme) => ({
