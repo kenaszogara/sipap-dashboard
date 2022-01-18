@@ -179,7 +179,7 @@ export default function Home() {
 
             <SectionTwo dataBapok={dataKomoditas} />
 
-            <SectionFour dataBapok={dataKomoditas} />
+            <SectionFour dataBapok={dataKomoditas} dataPelindo={data}/>
           </Grid>
         </div>
       )}

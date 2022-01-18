@@ -130,8 +130,7 @@ export default function Pelindo() {
 
       <Grid
         container
-        spacing={2}
-        style={{ marginLeft: "4em", marginRight: "4em" }}
+        style={{ marginLeft: "1em" }}
       >
         <Grid container item spacing={2} alignItems="baseline">
           <h1>Pelindo</h1>
@@ -149,25 +148,29 @@ export default function Pelindo() {
 
         {/* loading animation */}
         {loading && (
-          <Grid container spacing={4}>
+          <Grid container xs={12} spacing={4}>
             <Grid item className={classes.linearProgress} xs={12}>
               <LinearProgress />
             </Grid>
           </Grid>
         )}
 
-        {!loading && !error && data && (
-          <Grid container spacing={4}>
-            {/* Header Data */}
-            <Header data={data} />
+        <div
+          style={{ marginTop: "1.3em" }}
+        >
+          {!loading && !error && data && (
+            <Grid container xs={12} spacing={4}>
+              {/* Header Data */}
+              <Header data={data} />
 
-            {/* Body Data */}
-            <Chart data={data} />
+              {/* Body Data */}
+              <Chart data={data} />
 
-            {/* Pelindo III Data Table */}
-            <Table data={data} />
-          </Grid>
-        )}
+              {/* Pelindo III Data Table */}
+              <Table data={data} />
+            </Grid>
+          )}
+        </div>
       </Grid>
     </div>
   );

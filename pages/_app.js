@@ -42,6 +42,7 @@ function MyApp(props) {
           integrity="sha512-cHvujTbKVhurlO7/LNotR0zDEhYkbRiNhkg31AV5Mny7N+hLM95pn28zD39YWR6d0Kj3j+B6B+fGd+LY7DYLyg=="
           crossorigin="anonymous"
         ></script>
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
         {/* <script 
           src="https://code.jquery.com/jquery-3.2.1.slim.min.js" 
           integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" 

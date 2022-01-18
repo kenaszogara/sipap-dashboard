@@ -29,14 +29,14 @@ ChartJS.register(
 );
 
 export default function BarGraph(props) {
-  const { id, datasets, labels, tooltipsCallback, openData, column } = props;
+  const { id, datasets, labels, tooltipsCallback, openData, column, options, isClicked } = props;
 
   const dataChart = {
     labels: labels,
     datasets: datasets
   };
 
-  const options = {
+  const optionsChart = {
     responsive: true,
     plugins: {
       datalabels: {
@@ -91,7 +91,8 @@ export default function BarGraph(props) {
       line: {
         tension: 0 // disables bezier curves
       }
-    }
+    },
+    ...options
   };
 
   const chartRef = useRef(null);
@@ -114,14 +115,16 @@ export default function BarGraph(props) {
 
   const onClick = (event) => {
     const { current: chart } = chartRef;
-
+    
     if (!chart) {
       return;
     }
-    if (!getDatasetAtEvent(chart, event).length) return;
 
-    // openData(printDatasetAtEvent(getDatasetAtEvent(chart, event)), printElementAtEvent(getElementAtEvent(chart, event)), column);
+    if(isClicked){
+      if (!getDatasetAtEvent(chart, event).length) return;
+      openData({ month: printElementAtEvent(getElementAtEvent(chart, event)) }, column);
+    }
   };
 
-  return <Bar ref={chartRef} options={options} data={dataChart} onClick={onClick} />;
+  return <Bar ref={chartRef} options={optionsChart} data={dataChart} onClick={onClick} />;
 }

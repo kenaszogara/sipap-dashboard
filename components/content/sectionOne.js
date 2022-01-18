@@ -622,6 +622,7 @@ export default function SectionOne({ chart, data, year, handleYear, loading }) {
 
               {dataHarga != null && (
                 <BarGraph
+                  isClicked={false}
                   labels={dataHarga.labels}
                   datasets={[
                     {
