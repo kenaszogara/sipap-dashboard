@@ -5,12 +5,28 @@ import Grid from "@material-ui/core/Grid";
 
 export default function Table({ data }) {
   const [topBongkarVolumeData, setTopBongkarVolumeData] = useState(null);
+  const [topBongkarVolumeDataKhusus, setTopBongkarVolumeDataKhusu] = useState(null);
   const [topMuatVolumeData, setTopMuatVolumeData] = useState(null);
+  const [topMuatVolumeDataKhusus, setTopMuatVolumeDataKhusu] = useState(null);
 
   useEffect(() => {
     categorizeDataByJenis(data);
     // eslint-disable-next-line
   }, [data]);
+
+  const komoditasKhusus = [
+    "beras",
+    "kedelai",
+    "gula",
+    "cabe",
+    "bawang",
+    "ikan",
+    "ayam",
+    "sapi",
+    "terigu",
+    "ikan",
+    "telur"
+  ];
 
   // categorized data
   const categorizeDataByJenis = (data) => {
@@ -20,9 +36,29 @@ export default function Table({ data }) {
     const totalMuat = data.filter((item, index) => {
       return item.JENIS === "MUAT";
     });
+    
+    let totalBongkarKhusus = [];
+    let totalMuatKhusus = [];
+
+    komoditasKhusus.forEach((row) => {
+       let dataTempBongkar = data.filter((item, index) => {
+        return item.JENIS === "BONGKAR" && item.KOMODITAS.toLowerCase().includes(row);
+      });
+      
+      totalBongkarKhusus = [...totalBongkarKhusus, ...dataTempBongkar];
+
+      let dataTempMuat = data.filter((item, index) => {
+        return item.JENIS === "MUAT"  && item.KOMODITAS.toLowerCase().includes(row);
+      });
+
+      totalMuatKhusus = [...totalMuatKhusus, ...dataTempMuat];
+    })
 
     setTopBongkarVolumeData(parseVolumeData(totalBongkar));
     setTopMuatVolumeData(parseVolumeData(totalMuat));
+
+    setTopBongkarVolumeDataKhusu(parseVolumeData(totalBongkarKhusus));
+    setTopMuatVolumeDataKhusu(parseVolumeData(totalMuatKhusus));
   };
 
   // parse volume data
@@ -170,6 +206,70 @@ export default function Table({ data }) {
           options={{
             pageSize: 10,
             pageSizeOptions: [10, 20, 50, 100],
+          }}
+        />
+      </Grid>
+
+      <Grid item xs={12} md={6} id="bongkarKhusus">
+        <MaterialTable
+          columns={[
+            {
+              title: "No.",
+              field: "no",
+              cellStyle: {
+                width: 1,
+                maxWidth: 1,
+              },
+              headerStyle: {
+                width: 1,
+                maxWidth: 1,
+              },
+            },
+            { title: "Jenis Komoditas", field: "name" },
+            {
+              title: "Jumlah (kg)",
+              field: "volume",
+              type: "numeric",
+              render: (RowData) =>
+                new Intl.NumberFormat("id-ID").format(parseInt(RowData.volume)),
+            },
+          ]}
+          data={topBongkarVolumeDataKhusus}
+          title="Bongkar Khusus"
+          options={{
+            search: false,
+          }}
+        />
+      </Grid>
+
+      <Grid item xs={12} md={6} id="muatKhusus">
+        <MaterialTable
+          columns={[
+            {
+              title: "No.",
+              field: "no",
+              cellStyle: {
+                width: 1,
+                maxWidth: 1,
+              },
+              headerStyle: {
+                width: 1,
+                maxWidth: 1,
+              },
+            },
+            { title: "Jenis", field: "name" },
+            {
+              title: "Jumlah (kg)",
+              field: "volume",
+              type: "numeric",
+              render: (RowData) =>
+                new Intl.NumberFormat("id-ID").format(parseInt(RowData.volume)),
+            },
+          ]}
+          data={topMuatVolumeDataKhusus}
+          title="Muat Khusus"
+          options={{
+            search: false,
           }}
         />
       </Grid>

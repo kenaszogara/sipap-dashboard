@@ -75,7 +75,7 @@ export default function Home() {
       .get(`${host}api/v1/pelindo/auth/PP3_USR1`)
       .then((res) => {
         const token = res.data.JWT;
-        // console.log(token);
+        console.log("token", token);
         axios
           .get(`${host}api/v1/pelindo/${year}/${nextYear}`, {
             headers: {
